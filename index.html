@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Экза́мен · Уро́ки 9–11 · Ру́сский язы́к</title>
+
+<!-- ========== EmailJS SDK ========== -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<style>
+:root{
+  --cream:#FFFAF3;
+  --card:#FFFFFF;
+  --rose:#C0697B;
+  --rose-dark:#A6556A;
+  --orange:#EE8B3C;
+  --orange-deep:#D9701F;
+  --green:#5C9E54;
+  --green-soft:#E9F5E5;
+  --red:#D9534F;
+  --red-soft:#FBE7E6;
+  --ink:#403430;
+  --ink-soft:#85736E;
+  --line:#F3E3DC;
+  --radius:18px;
+  --shadow:0 3px 14px rgba(150,90,90,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{
+  font-family:Tahoma,Verdana,Arial,"Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif;
+  background:var(--cream);
+  background-image:radial-gradient(circle at 10% 6%,#FDEDE4 0,transparent 32%),radial-gradient(circle at 92% 92%,#F8E8EC 0,transparent 36%);
+  color:var(--ink);
+  min-height:100vh;
+  padding:14px 12px 60px;
+}
+.wrap{max-width:860px;margin:0 auto}
+
+/* ---- HEADER ---- */
+header{
+  background:linear-gradient(120deg,var(--rose) 0%,var(--rose-dark) 100%);
+  color:#FFF6EE;
+  border-radius:22px;
+  padding:20px 22px 18px;
+  box-shadow:var(--shadow);
+  margin-bottom:14px;
+}
+header h1{font-size:1.35rem;letter-spacing:.3px}
+header .sub{margin-top:6px;font-size:.82rem;opacity:.94;line-height:1.6}
+
+/* ---- TIMER ---- */
+.timer-bar{
+  display:flex;align-items:center;gap:12px;
+  background:var(--card);border-radius:14px;
+  padding:12px 16px;margin-bottom:14px;
+  box-shadow:var(--shadow);
+}
+.timer-clock{
+  font-size:1.5rem;font-weight:700;
+  color:var(--rose-dark);min-width:80px;font-variant-numeric:tabular-nums;
+}
+.timer-clock.warn{color:var(--red);animation:pulse 1s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+.timer-label{font-size:.8rem;color:var(--ink-soft);flex:1}
+.progress{height:8px;background:var(--line);border-radius:999px;overflow:hidden;flex:1 1 120px}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--orange),var(--green));border-radius:999px;transition:width 1s linear}
+
+/* ---- STUDENT FORM ---- */
+.sform{
+  background:var(--card);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:22px 20px 26px;margin-bottom:18px;
+}
+.sform h2{font-size:1.05rem;color:var(--rose-dark);margin-bottom:14px}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:.82rem;font-weight:700;color:var(--ink-soft);margin-bottom:5px}
+.field input,.field textarea{
+  width:100%;border:2px solid var(--line);border-radius:10px;
+  padding:10px 12px;font-size:.95rem;font-family:inherit;
+  background:#FFFDFB;color:var(--ink);outline:none;
+  transition:border .15s;
+}
+.field input:focus,.field textarea:focus{border-color:var(--orange)}
+.field textarea{min-height:70px;resize:vertical}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:520px){.field-row{grid-template-columns:1fr}}
+
+/* ---- QUESTIONS ---- */
+.qblock{
+  background:var(--card);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:20px 18px 22px;
+  margin-bottom:14px;
+}
+.qnum{
+  display:inline-block;background:var(--rose);color:#fff;
+  font-size:.75rem;font-weight:700;border-radius:999px;
+  padding:3px 10px;margin-bottom:10px;
+}
+.qtext{font-size:1rem;font-weight:700;color:var(--ink);line-height:1.55;margin-bottom:6px}
+.qhint{font-size:.8rem;color:var(--ink-soft);margin-bottom:12px;line-height:1.5}
+
+/* MCQ */
+.opts{display:grid;gap:9px}
+.opt{
+  border:2px solid var(--line);background:#FFFDFA;
+  border-radius:13px;padding:11px 14px;
+  text-align:left;cursor:pointer;font-size:.9rem;
+  font-family:inherit;color:var(--ink);
+  transition:.14s;line-height:1.5;
+}
+.opt:hover{border-color:var(--orange)}
+.opt.sel{border-color:var(--orange);background:#FCEEDF;font-weight:700}
+.opt .ruO{font-size:1.05rem;font-weight:700;color:var(--rose-dark)}
+
+/* Fill-in */
+.fill-wrap{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.fill-input{
+  border:2px solid var(--line);border-radius:10px;
+  padding:9px 12px;font-size:1rem;font-family:inherit;
+  background:#FFFDFB;color:var(--ink);outline:none;
+  transition:border .15s;min-width:180px;flex:1;
+}
+.fill-input:focus{border-color:var(--orange)}
+
+/* Sort (days) */
+.sort-pool,.sort-zone{
+  min-height:52px;border:2px dashed var(--rose);
+  border-radius:13px;padding:9px;
+  display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start;
+  margin-bottom:8px;background:#FFFDFB;
+}
+.sort-zone{border-color:var(--orange)}
+.chip{
+  border:2px solid var(--line);background:#FCEFE0;
+  color:var(--ink);border-radius:999px;
+  padding:7px 13px;font-size:.95rem;font-weight:600;
+  cursor:pointer;transition:.12s;font-family:inherit;
+}
+.chip:hover{border-color:var(--orange);transform:translateY(-1px)}
+.sort-zone .chip{background:#F8E7EA;border-color:#EBC9CF}
+.sort-hint{font-size:.76rem;color:var(--ink-soft);margin-bottom:4px}
+
+/* Matching */
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mcol{display:flex;flex-direction:column;gap:8px}
+.mcard{
+  border:2px solid var(--line);background:#FFFDFA;
+  border-radius:12px;padding:10px 10px;
+  cursor:pointer;text-align:center;
+  font-size:.84rem;line-height:1.45;
+  transition:.14s;min-height:54px;
+  display:flex;flex-direction:column;justify-content:center;
+  font-family:inherit;
+}
+.mcard .ruM{font-size:1.02rem;font-weight:700;color:var(--rose-dark)}
+.mcard:hover{border-color:var(--orange)}
+.mcard.msel{border-color:var(--orange);background:#FCEEDF;transform:scale(1.02)}
+.mcard.mdone{background:var(--green-soft);border-color:var(--green);cursor:default;opacity:.8}
+.mcard.mwrong{animation:shake .3s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.match-status{font-size:.8rem;color:var(--ink-soft);margin-top:6px;text-align:center}
+
+/* ---- SUBMIT ---- */
+.submit-area{text-align:center;padding:10px 0 20px}
+.btn{
+  border:none;border-radius:999px;cursor:pointer;
+  font-size:1rem;font-weight:700;padding:13px 32px;
+  background:var(--orange);color:#FFF;box-shadow:var(--shadow);
+  transition:.15s;font-family:inherit;
+}
+.btn:hover{background:var(--orange-deep)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn-ghost{background:#FFF;color:var(--rose-dark);border:2px solid var(--rose);box-shadow:none}
+
+/* ---- RESULT ---- */
+.result-screen{
+  background:var(--card);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:30px 22px;
+  text-align:center;display:none;
+}
+.result-screen .emoji{font-size:3.2rem;margin-bottom:10px}
+.result-screen h2{color:var(--rose-dark);font-size:1.4rem;margin-bottom:8px}
+.result-screen .score-big{font-size:2.6rem;font-weight:700;color:var(--orange-deep)}
+.result-screen p{font-size:.9rem;color:var(--ink-soft);line-height:1.65;margin-top:6px}
+.result-detail{
+  margin:16px 0;background:#FBF0E4;border-radius:12px;
+  padding:14px 16px;text-align:left;font-size:.86rem;line-height:1.9;
+}
+.send-status{margin-top:14px;font-size:.88rem;font-weight:700}
+.send-status.ok{color:var(--green)}
+.send-status.err{color:var(--red)}
+
+/* ---- MISC ---- */
+.instr{
+  background:#FBF0E4;border-left:5px solid var(--orange);
+  border-radius:10px;padding:10px 12px;
+  font-size:.8rem;line-height:1.55;color:var(--ink-soft);margin-bottom:12px;
+}
+.instr b{color:var(--ink)}
+footer{text-align:center;margin-top:22px;font-size:.73rem;color:var(--ink-soft);line-height:1.6}
+
+/* ---- OVERLAY (timeout) ---- */
+.overlay{
+  display:none;position:fixed;inset:0;background:rgba(64,52,48,.72);
+  z-index:999;align-items:center;justify-content:center;
+}
+.overlay.show{display:flex}
+.overlay-box{
+  background:#fff;border-radius:22px;padding:32px 28px;
+  text-align:center;max-width:360px;width:90%;
+}
+.overlay-box h2{color:var(--rose-dark);margin-bottom:10px;font-size:1.2rem}
+.overlay-box p{font-size:.88rem;color:var(--ink-soft);line-height:1.6;margin-bottom:18px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HEADER -->
+<header>
+  <h1>📝 Семестровый экза́мен · Semester Exam · 學期考試</h1>
+  <div class="sub">
+    Ру́сский язы́к · Уро́ки 9–11 · Москва́, рестора́н, дни неде́ли ✈️🍽📅<br>
+    10 зада́ний · 100 балло́в · Вре́мя: 50 мину́т<br>
+    10 questions · 100 points · Time limit: 50 minutes · 10題 · 100分 · 限時50分鐘
+  </div>
+</header>
+
+<!-- TIMER -->
+<div class="timer-bar">
+  <div class="timer-clock" id="timerClock">50:00</div>
+  <div class="timer-label">
+    ⏱ Вре́мя · Time · 時間<br>
+    <span style="font-size:.72rem">Мо́жно возвраща́ться к зада́ниям · You may revise answers · 可以修改答案</span>
+  </div>
+  <div class="progress" style="max-width:160px"><i id="timerBar" style="width:100%"></i></div>
+</div>
+
+<!-- STUDENT FORM -->
+<div class="sform">
+  <h2>👤 Данные студента · Student Information · 學生資料</h2>
+  <div class="field-row">
+    <div class="field">
+      <label>姓名 · Full Name · 姓名（中文）*</label>
+      <input type="text" id="stuName" placeholder="e.g. 陳雅婷" required>
+    </div>
+    <div class="field">
+      <label>學號 · Student ID · 學號*</label>
+      <input type="text" id="stuId" placeholder="e.g. 10912345" required>
+    </div>
+  </div>
+  <div class="field-row">
+    <div class="field">
+      <label>Ру́сское и́мя (лати́ницей) · Russian Name (Latin letters) · 俄語名（拉丁字母）*</label>
+      <input type="text" id="stuRuName" placeholder="e.g. Nataliya" required>
+    </div>
+    <div class="field">
+      <label>Email студента · Student Email · 學生郵箱*</label>
+      <input type="email" id="stuEmail" placeholder="you@example.com" required>
+    </div>
+  </div>
+  <div class="field">
+    <label>Примечания студента · Student Notes · 學生備註（可選）</label>
+    <textarea id="stuNotes" placeholder="Напишите что-нибудь сюда, если хотите... · Optional notes..."></textarea>
+  </div>
+</div>
+
+<!-- ========== Q1 ========== -->
+<div class="qblock" id="q1">
+  <span class="qnum">Зада́ние 1 / 10 · 10 points</span>
+  <div class="qtext">Выбери́те пра́вильный пе́ревод · Choose the correct translation · 選出正確的翻譯</div>
+  <div class="qhint">🇷🇺 <b>аэропо́рт</b></div>
+  <div class="opts" id="q1opts">
+    <button class="opt" data-val="a" onclick="mcqPick(1,'a')"><span class="ruO">a)</span> passport control · 護照檢查 · kiểm tra hộ chiếu</button>
+    <button class="opt" data-val="b" onclick="mcqPick(1,'b')"><span class="ruO">b)</span> airport · 機場 · sân bay ✓</button>
+    <button class="opt" data-val="c" onclick="mcqPick(1,'c')"><span class="ruO">c)</span> customs · 海關 · hải quan</button>
+    <button class="opt" data-val="d" onclick="mcqPick(1,'d')"><span class="ruO">d)</span> hotel · 酒店 · khách sạn</button>
+  </div>
+</div>
+
+<!-- ========== Q2 ========== -->
+<div class="qblock" id="q2">
+  <span class="qnum">Зада́ние 2 / 10 · 10 points</span>
+  <div class="qtext">Выбери́те пра́вильный пе́ревод · Choose the correct translation · 選出正確的翻譯</div>
+  <div class="qhint">🇹🇼 <b>天氣預報</b> · weather forecast · dự báo thời tiết</div>
+  <div class="opts" id="q2opts">
+    <button class="opt" data-val="a" onclick="mcqPick(2,'a')"><span class="ruO">a)</span> зима́</button>
+    <button class="opt" data-val="b" onclick="mcqPick(2,'b')"><span class="ruO">b)</span> хо́лодно</button>
+    <button class="opt" data-val="c" onclick="mcqPick(2,'c')"><span class="ruO">c)</span> прогно́з пого́ды ✓</button>
+    <button class="opt" data-val="d" onclick="mcqPick(2,'d')"><span class="ruO">d)</span> ве́тер</button>
+  </div>
+</div>
+
+<!-- ========== Q3 ========== -->
+<div class="qblock" id="q3">
+  <span class="qnum">Зада́ние 3 / 10 · 10 points</span>
+  <div class="qtext">Выбери́те пра́вильный пе́ревод · Choose the correct translation · 選出正確的翻譯</div>
+  <div class="qhint">🇷🇺 <b>официа́нт</b></div>
+  <div class="opts" id="q3opts">
+    <button class="opt" data-val="a" onclick="mcqPick(3,'a')"><span class="ruO">a)</span> engineer · 工程師 · kỹ sư</button>
+    <button class="opt" data-val="b" onclick="mcqPick(3,'b')"><span class="ruO">b)</span> doctor · 醫生 · bác sĩ</button>
+    <button class="opt" data-val="c" onclick="mcqPick(3,'c')"><span class="ruO">c)</span> businessman · 商人 · doanh nhân</button>
+    <button class="opt" data-val="d" onclick="mcqPick(3,'d')"><span class="ruO">d)</span> waiter · 服務員 · bồi bàn ✓</button>
+  </div>
+</div>
+
+<!-- ========== Q4 ========== -->
+<div class="qblock" id="q4">
+  <span class="qnum">Зада́ние 4 / 10 · 10 points</span>
+  <div class="qtext">Выбери́те пра́вильный пе́ревод · Choose the correct translation · 選出正確的翻譯</div>
+  <div class="qhint">🇷🇺 <b>переса́дка</b></div>
+  <div class="opts" id="q4opts">
+    <button class="opt" data-val="a" onclick="mcqPick(4,'a')"><span class="ruO">a)</span> direct flight · 直飛班次 · chuyến bay thẳng</button>
+    <button class="opt" data-val="b" onclick="mcqPick(4,'b')"><span class="ruO">b)</span> airline · 航空公司 · hãng hàng không</button>
+    <button class="opt" data-val="c" onclick="mcqPick(4,'c')"><span class="ruO">c)</span> transfer / connection · 轉機 · quá cảnh ✓</button>
+    <button class="opt" data-val="d" onclick="mcqPick(4,'d')"><span class="ruO">d)</span> free of charge · 免費的 · miễn phí</button>
+  </div>
+</div>
+
+<!-- ========== Q5 ========== -->
+<div class="qblock" id="q5">
+  <span class="qnum">Зада́ние 5 / 10 · 10 points</span>
+  <div class="qtext">Сопоста́вьте слова́ и переводы́ · Match words and translations · 配對單詞與翻譯</div>
+  <div class="qhint">Нажми́те ру́сское сло́во, потом пе́ревод · Tap Russian word then its translation · 先點俄語，再點翻譯</div>
+  <div class="match-grid">
+    <div class="mcol" id="q5left">
+      <button class="mcard" data-key="семья́" onclick="matchPick(5,this,'L')"><span class="ruM">семья́</span></button>
+      <button class="mcard" data-key="вку́сный" onclick="matchPick(5,this,'L')"><span class="ruM">вку́сный</span></button>
+      <button class="mcard" data-key="счёт" onclick="matchPick(5,this,'L')"><span class="ruM">счёт</span></button>
+      <button class="mcard" data-key="сестра́" onclick="matchPick(5,this,'L')"><span class="ruM">сестра́</span></button>
+    </div>
+    <div class="mcol" id="q5right">
+      <button class="mcard" data-key="вку́сный" onclick="matchPick(5,this,'R')">delicious · 好吃的 · ngon</button>
+      <button class="mcard" data-key="сестра́" onclick="matchPick(5,this,'R')">sister · 姊妹 · chị/em gái</button>
+      <button class="mcard" data-key="счёт" onclick="matchPick(5,this,'R')">bill · 帳單 · hoá đơn</button>
+      <button class="mcard" data-key="семья́" onclick="matchPick(5,this,'R')">family · 家庭 · gia đình</button>
+    </div>
+  </div>
+  <div class="match-status" id="q5status">✅ 0 / 4 пар · pairs · 對</div>
+</div>
+
+<!-- ========== Q6 ========== -->
+<div class="qblock" id="q6">
+  <span class="qnum">Зада́ние 6 / 10 · 10 points</span>
+  <div class="qtext">Сопоста́вьте слова́ и переводы́ · Match words and translations · 配對單詞與翻譯</div>
+  <div class="qhint">Нажми́те ру́сское сло́во, потом пе́ревод · Tap Russian word then its translation · 先點俄語，再點翻譯</div>
+  <div class="match-grid">
+    <div class="mcol" id="q6left">
+      <button class="mcard" data-key="за́втрак" onclick="matchPick(6,this,'L')"><span class="ruM">за́втрак</span></button>
+      <button class="mcard" data-key="беспла́тный" onclick="matchPick(6,this,'L')"><span class="ruM">беспла́тный</span></button>
+      <button class="mcard" data-key="ко́фе" onclick="matchPick(6,this,'L')"><span class="ruM">ко́фе</span></button>
+      <button class="mcard" data-key="авиакомпа́ния" onclick="matchPick(6,this,'L')"><span class="ruM">авиакомпа́ния</span></button>
+    </div>
+    <div class="mcol" id="q6right">
+      <button class="mcard" data-key="ко́фе" onclick="matchPick(6,this,'R')">coffee · 咖啡 · cà phê</button>
+      <button class="mcard" data-key="авиакомпа́ния" onclick="matchPick(6,this,'R')">airline · 航空公司 · hãng hàng không</button>
+      <button class="mcard" data-key="за́втрак" onclick="matchPick(6,this,'R')">breakfast · 早餐 · bữa sáng</button>
+      <button class="mcard" data-key="беспла́тный" onclick="matchPick(6,this,'R')">free (of charge) · 免費的 · miễn phí</button>
+    </div>
+  </div>
+  <div class="match-status" id="q6status">✅ 0 / 4 пар · pairs · 對</div>
+</div>
+
+<!-- ========== Q7 ========== -->
+<div class="qblock" id="q7">
+  <span class="qnum">Зада́ние 7 / 10 · 10 points</span>
+  <div class="qtext">Запо́лните про́пуск · Fill in the blank · 填空</div>
+  <div class="qhint">
+    Вста́вьте ну́жное сло́во · Insert the correct word · 填入正確的詞<br>
+    <span style="font-size:.76rem">Сло́ва на вы́бор · Word bank · 詞庫: <b>снача́ла · пото́м · наконе́ц · до́лго</b></span>
+  </div>
+  <p style="font-size:.93rem;line-height:1.9;margin-bottom:10px">
+    _____ мы прошли́ па́спортный контро́ль.<br>
+    _____ мы прошли́ тамо́жню.<br>
+    _____ мы прие́хали в оте́ль.
+  </p>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div class="fill-wrap">
+      <span style="font-size:.8rem;color:var(--ink-soft);min-width:28px">1.</span>
+      <input class="fill-input" id="q7a" placeholder="снача́ла / пото́м / наконе́ц">
+    </div>
+    <div class="fill-wrap">
+      <span style="font-size:.8rem;color:var(--ink-soft);min-width:28px">2.</span>
+      <input class="fill-input" id="q7b" placeholder="снача́ла / пото́м / наконе́ц">
+    </div>
+    <div class="fill-wrap">
+      <span style="font-size:.8rem;color:var(--ink-soft);min-width:28px">3.</span>
+      <input class="fill-input" id="q7c" placeholder="снача́ла / пото́м / наконе́ц">
+    </div>
+  </div>
+</div>
+
+<!-- ========== Q8 ========== -->
+<div class="qblock" id="q8">
+  <span class="qnum">Зада́ние 8 / 10 · 10 points</span>
+  <div class="qtext">Запо́лните про́пуск · Fill in the blank · 填空</div>
+  <div class="qhint">
+    Напиши́те профе́ссию на ру́сском · Write the profession in Russian · 用俄語寫出職業<br>
+    <span style="font-size:.76rem">врач · инжене́р · преподава́тель · бизнесме́н · студе́нт</span>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:10px;font-size:.93rem;line-height:1.9">
+    <div class="fill-wrap">
+      <span style="min-width:200px">Моя́ ма́ма — учи́тель в университе́те. Она́ ___</span>
+      <input class="fill-input" id="q8a" placeholder="профе́ссия · profession">
+    </div>
+    <div class="fill-wrap">
+      <span style="min-width:200px">Мой брат рабо́тает в больни́це. Он ___</span>
+      <input class="fill-input" id="q8b" placeholder="профе́ссия · profession">
+    </div>
+    <div class="fill-wrap">
+      <span style="min-width:200px">Я учу́сь в университе́те. Я ___</span>
+      <input class="fill-input" id="q8c" placeholder="профе́ссия · profession">
+    </div>
+  </div>
+</div>
+
+<!-- ========== Q9 ========== -->
+<div class="qblock" id="q9">
+  <span class="qnum">Зада́ние 9 / 10 · 10 points</span>
+  <div class="qtext">Поставьте дни неде́ли по поря́дку · Put the days of the week in order · 將星期按正確順序排列</div>
+  <div class="qhint">От понеде́льника (1) до воскресе́нья (7) · From Monday to Sunday · 從星期一到星期日</div>
+  <div class="sort-hint">Зо́на отве́та (нажми́те, чтобы убра́ть) · Answer zone (tap to remove) · 答案區（點擊移除）:</div>
+  <div class="sort-zone" id="q9zone"></div>
+  <div class="sort-hint">Слова́ (нажми́те, чтобы доба́вить) · Word bank (tap to add) · 詞庫（點擊添加）:</div>
+  <div class="sort-pool" id="q9pool"></div>
+</div>
+
+<!-- ========== Q10 ========== -->
+<div class="qblock" id="q10">
+  <span class="qnum">Зада́ние 10 / 10 · 10 points</span>
+  <div class="qtext">Составьте предложение · Build the sentence · 組成句子</div>
+  <div class="qhint">
+    🇹🇼 我們從台北飛往莫斯科差不多二十個小時。<br>
+    🇬🇧 We flew to Moscow from Taipei for almost twenty hours.<br>
+    🇻🇳 Chúng tôi bay từ Đài Bắc đến Moskva gần hai mươi tiếng.
+  </div>
+  <div class="sort-hint">Зо́на отве́та · Answer zone · 答案區:</div>
+  <div class="sort-zone" id="q10zone"></div>
+  <div class="sort-hint">Слова́ · Words · 詞庫:</div>
+  <div class="sort-pool" id="q10pool"></div>
+</div>
+
+<!-- SUBMIT -->
+<div class="submit-area">
+  <button class="btn" id="submitBtn" onclick="submitExam()">
+    📨 Отпра́вить экза́мен · Submit Exam · 提交考卷
+  </button>
+  <p style="margin-top:10px;font-size:.78rem;color:var(--ink-soft)">
+    Убеди́тесь, что все поля́ запо́лнены · Make sure all fields are filled · 請確認所有欄位已填寫
+  </p>
+</div>
+
+<!-- RESULT SCREEN -->
+<div class="result-screen" id="resultScreen">
+  <div class="emoji" id="resEmoji">🏆</div>
+  <h2>Результа́т экза́мена · Exam Result · 考試成績</h2>
+  <div class="score-big" id="resBig">--</div>
+  <p id="resSubtitle"></p>
+  <div class="result-detail" id="resDetail"></div>
+  <div class="send-status" id="sendStatus"></div>
+</div>
+
+<!-- TIMEOUT OVERLAY -->
+<div class="overlay" id="timeoutOverlay">
+  <div class="overlay-box">
+    <h2>⏱ Вре́мя вы́шло! · Time's up! · 時間到！</h2>
+    <p>Экза́мен автомати́чески отправля́ется · The exam is being submitted automatically · 考卷正在自動提交</p>
+    <button class="btn" onclick="document.getElementById('timeoutOverlay').classList.remove('show')">OK</button>
+  </div>
+</div>
+
+<footer>
+  Ударе́ния отме́чены во всех ру́сских слова́х · Stress marks are shown in all Russian words<br>
+  所有俄語單詞均標有重音 · Tất cả các từ tiếng Nga đều có dấu trọng âm<br>
+  中原大學 · Русский язык как иностранный
+</footer>
+</div><!-- /wrap -->
+
+<script>
+/* ============================================================
+   CONFIGURATION — ЗАМЕНИТЕ ЗНАЧЕНИЯ ПОСЛЕ РЕГИСТРАЦИИ EmailJS
+   Replace these values after registering on emailjs.com
+   ============================================================ */
+const EMAILJS_PUBLIC_KEY  = "fcPVwgpMK7uXx_D3B";   // из Account → API Keys
+const EMAILJS_SERVICE_ID  = "collegeorient";   // из Email Services
+const EMAILJS_TEMPLATE_ID = "template_p4kk8bt";  // из Email Templates
+const TEACHER_EMAIL       = "collegeorient@gmail.com";
+
+/* ============ CORRECT ANSWERS ============ */
+const ANSWERS = {
+  q1: "b",        // аэропо́рт = airport
+  q2: "c",        // прогно́з пого́ды
+  q3: "d",        // официа́нт = waiter
+  q4: "c",        // переса́дка = transfer
+  // Q5, Q6: matching — graded by match state
+  // Q7: fill-in (flexible)
+  q7a: ["снача́ла","сначала"],
+  q7b: ["пото́м","потом"],
+  q7c: ["наконе́ц","наконец"],
+  // Q8: fill-in (flexible)
+  q8a: ["преподава́тель","преподаватель"],
+  q8b: ["врач"],
+  q8c: ["студе́нт","студент"],
+  // Q9: days order
+  q9order: ["понеде́льник","вто́рник","среда́","четве́рг","пя́тница","суббо́та","воскресе́нье"],
+  // Q10: sentence
+  q10sentence: "Мы лете́ли в Москву́ из Тайбэ́я почти́ два́дцать часо́в."
+};
+
+/* ============ TIMER ============ */
+const TOTAL_SEC = 50 * 60;
+let timeLeft = TOTAL_SEC;
+let timerInterval = null;
+let examSubmitted = false;
+
+function startTimer(){
+  timerInterval = setInterval(()=>{
+    if(examSubmitted){clearInterval(timerInterval);return;}
+    timeLeft--;
+    updateTimerDisplay();
+    if(timeLeft <= 0){
+      clearInterval(timerInterval);
+      document.getElementById("timeoutOverlay").classList.add("show");
+      setTimeout(()=>submitExam(true), 1200);
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay(){
+  const m = Math.floor(timeLeft/60);
+  const s = timeLeft % 60;
+  const el = document.getElementById("timerClock");
+  el.textContent = String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+  el.classList.toggle("warn", timeLeft <= 300);
+  document.getElementById("timerBar").style.width = (timeLeft/TOTAL_SEC*100)+"%";
+}
+
+/* ============ MCQ ============ */
+const mcqState = {};
+function mcqPick(qn, val){
+  mcqState[qn] = val;
+  document.querySelectorAll("#q"+qn+"opts .opt").forEach(b=>{
+    b.classList.toggle("sel", b.dataset.val === val);
+  });
+}
+
+/* ============ MATCHING ============ */
+const matchState = {};   // matchState[qn] = {selL, selR, pairs: Set}
+function initMatch(qn){
+  matchState[qn] = {selL:null, selR:null, pairs: new Set()};
+}
+function matchPick(qn, card, side){
+  const s = matchState[qn];
+  if(card.classList.contains("mdone")) return;
+  if(side==="L"){
+    if(s.selL) s.selL.classList.remove("msel");
+    s.selL = (s.selL===card)?null:card;
+    if(s.selL) s.selL.classList.add("msel");
+  } else {
+    if(s.selR) s.selR.classList.remove("msel");
+    s.selR = (s.selR===card)?null:card;
+    if(s.selR) s.selR.classList.add("msel");
+  }
+  if(s.selL && s.selR){
+    const a=s.selL, b=s.selR;
+    s.selL=s.selR=null;
+    if(a.dataset.key===b.dataset.key){
+      a.classList.remove("msel"); b.classList.remove("msel");
+      a.classList.add("mdone"); b.classList.add("mdone");
+      s.pairs.add(a.dataset.key);
+    } else {
+      a.classList.add("mwrong"); b.classList.add("mwrong");
+      setTimeout(()=>{a.classList.remove("msel","mwrong");b.classList.remove("msel","mwrong");},350);
+    }
+    document.getElementById("q"+qn+"status").textContent =
+      "✅ "+s.pairs.size+" / 4 пар · pairs · 對";
+  }
+}
+
+/* ============ SORT (Days — Q9) ============ */
+let q9zone=[], q9pool=[];
+const Q9_DAYS=["понеде́льник","вто́рник","среда́","четве́рг","пя́тница","суббо́та","воскресе́нье"];
+
+function initSort9(){
+  q9pool = [...Q9_DAYS].sort(()=>Math.random()-.5);
+  q9zone = [];
+  drawSort9();
+}
+function drawSort9(){
+  const zEl=document.getElementById("q9zone");
+  const pEl=document.getElementById("q9pool");
+  zEl.innerHTML=""; pEl.innerHTML="";
+  q9zone.forEach((w,i)=>{
+    const c=document.createElement("button");
+    c.className="chip"; c.textContent=(i+1)+". "+w;
+    c.onclick=()=>{q9pool.push(w);q9zone.splice(i,1);drawSort9();};
+    zEl.appendChild(c);
+  });
+  q9pool.forEach((w,i)=>{
+    const c=document.createElement("button");
+    c.className="chip"; c.textContent=w;
+    c.onclick=()=>{q9zone.push(w);q9pool.splice(i,1);drawSort9();};
+    pEl.appendChild(c);
+  });
+}
+
+/* ============ SORT (Sentence — Q10) ============ */
+let q10zone=[], q10pool=[];
+const Q10_WORDS=["Мы","лете́ли","в","Москву́","из","Тайбэ́я","почти́","два́дцать","часо́в."];
+
+function initSort10(){
+  q10pool=[...Q10_WORDS].sort(()=>Math.random()-.5);
+  q10zone=[];
+  drawSort10();
+}
+function drawSort10(){
+  const zEl=document.getElementById("q10zone");
+  const pEl=document.getElementById("q10pool");
+  zEl.innerHTML=""; pEl.innerHTML="";
+  q10zone.forEach((w,i)=>{
+    const c=document.createElement("button");
+    c.className="chip"; c.textContent=w;
+    c.onclick=()=>{q10pool.push(w);q10zone.splice(i,1);drawSort10();};
+    zEl.appendChild(c);
+  });
+  q10pool.forEach((w,i)=>{
+    const c=document.createElement("button");
+    c.className="chip"; c.textContent=w;
+    c.onclick=()=>{q10zone.push(w);q10pool.splice(i,1);drawSort10();};
+    pEl.appendChild(c);
+  });
+}
+
+/* ============ GRADING ============ */
+function normalize(s){ return s.trim().replace(/\u0301/g,"").toLowerCase(); }
+
+function gradeAll(){
+  const pts = {};
+
+  // Q1–Q4: MCQ, 10 pts each
+  pts.q1 = (mcqState[1]===ANSWERS.q1) ? 10 : 0;
+  pts.q2 = (mcqState[2]===ANSWERS.q2) ? 10 : 0;
+  pts.q3 = (mcqState[3]===ANSWERS.q3) ? 10 : 0;
+  pts.q4 = (mcqState[4]===ANSWERS.q4) ? 10 : 0;
+
+  // Q5: matching 4 pairs × 2.5 = 10 pts
+  pts.q5 = (matchState[5]?.pairs?.size||0) * 2.5;
+
+  // Q6: matching 4 pairs × 2.5 = 10 pts
+  pts.q6 = (matchState[6]?.pairs?.size||0) * 2.5;
+
+  // Q7: fill-in 3 blanks × ~3.33 pts (rounded)
+  function fillOk(id, correct){
+    const v = normalize(document.getElementById(id)?.value||"");
+    return correct.some(c=>normalize(c)===v);
+  }
+  const q7ok = [fillOk("q7a",ANSWERS.q7a), fillOk("q7b",ANSWERS.q7b), fillOk("q7c",ANSWERS.q7c)];
+  pts.q7 = Math.round(q7ok.filter(Boolean).length * 10/3);
+
+  // Q8: fill-in 3 blanks × ~3.33 pts
+  const q8ok = [fillOk("q8a",ANSWERS.q8a), fillOk("q8b",ANSWERS.q8b), fillOk("q8c",ANSWERS.q8c)];
+  pts.q8 = Math.round(q8ok.filter(Boolean).length * 10/3);
+
+  // Q9: days order, each correct position = 10/7 pts
+  const q9correct = q9zone.filter((w,i)=>normalize(w)===normalize(ANSWERS.q9order[i])).length;
+  pts.q9 = Math.round(q9correct * 10/7);
+
+  // Q10: sentence order — full match = 10, partial (≥6/9 words correct position) = 5
+  const q10words = q10zone.map(w=>normalize(w));
+  const q10ref   = Q10_WORDS.map(w=>normalize(w));
+  const q10correct = q10words.filter((w,i)=>w===q10ref[i]).length;
+  pts.q10 = q10words.join(" ")===q10ref.join(" ") ? 10 :
+            q10correct >= 6 ? 5 : 0;
+
+  const total = Math.min(100, Object.values(pts).reduce((a,b)=>a+b,0));
+  return {pts, total, q7ok, q8ok, q9correct, q10correct};
+}
+
+/* ============ SUBMIT ============ */
+async function submitExam(auto=false){
+  if(examSubmitted) return;
+
+  // Validate student form
+  const name    = document.getElementById("stuName").value.trim();
+  const sid     = document.getElementById("stuId").value.trim();
+  const runame  = document.getElementById("stuRuName").value.trim();
+  const email   = document.getElementById("stuEmail").value.trim();
+  const notes   = document.getElementById("stuNotes").value.trim();
+
+  if(!name||!sid||!runame||!email){
+    if(!auto){
+      alert("⚠️ 請填寫所有必填欄位 · Please fill in all required fields · Заполните все обязательные поля.");
+      return;
+    }
+  }
+
+  examSubmitted = true;
+  clearInterval(timerInterval);
+  document.getElementById("submitBtn").disabled = true;
+
+  const {pts, total, q7ok, q8ok, q9correct, q10correct} = gradeAll();
+
+  // Build detail text
+  const now = new Date().toLocaleString("zh-TW", {timeZone:"Asia/Taipei"});
+  const detail = `
+Зада́ние 1 (MCQ аэропо́рт): ${pts.q1}/10
+Зада́ние 2 (MCQ прогно́з пого́ды): ${pts.q2}/10
+Зада́ние 3 (MCQ официа́нт): ${pts.q3}/10
+Зада́ние 4 (MCQ переса́дка): ${pts.q4}/10
+Зада́ние 5 (Matching семья etc.): ${pts.q5}/10
+Зада́ние 6 (Matching за́втрак etc.): ${pts.q6}/10
+Зада́ние 7 (Fill-in снача́ла/пото́м/наконе́ц): ${pts.q7}/10 (${q7ok.map((b,i)=>b?"✅":"❌").join(" ")})
+Зада́ние 8 (Fill-in профе́ссии): ${pts.q8}/10 (${q8ok.map((b,i)=>b?"✅":"❌").join(" ")})
+Зада́ние 9 (Days order — ${q9correct}/7 correct): ${pts.q9}/10
+Зада́ние 10 (Sentence — ${q10correct}/9 words): ${pts.q10}/10
+──────────────
+ИТОГО / TOTAL / 總分: ${total} / 100
+──────────────
+Ответы студента:
+Q7a: "${document.getElementById("q7a").value}" | Q7b: "${document.getElementById("q7b").value}" | Q7c: "${document.getElementById("q7c").value}"
+Q8a: "${document.getElementById("q8a").value}" | Q8b: "${document.getElementById("q8b").value}" | Q8c: "${document.getElementById("q8c").value}"
+Q9 (порядок): ${q9zone.join(" → ")||"(пусто)"}
+Q10 (предложение): ${q10zone.join(" ")||"(пусто)"}
+Примечания студента: ${notes||"—"}
+Время подачи: ${now}
+`.trim();
+
+  // Show result screen
+  const emoji = total>=90?"🏆":total>=70?"🎉":total>=50?"💪":"📚";
+  document.getElementById("resEmoji").textContent = emoji;
+  document.getElementById("resBig").textContent   = total + " / 100";
+  document.getElementById("resSubtitle").textContent =
+    (total>=90?"Отли́чно! · Excellent! · 優秀！":
+     total>=70?"Хорошо́! · Good! · 良好！":
+     total>=50?"Непло́хо · Not bad · 還可以":
+     "Продолжа́йте учи́ться · Keep studying · 繼續努力");
+  document.getElementById("resDetail").textContent = detail;
+  document.getElementById("resultScreen").style.display = "block";
+  document.getElementById("resultScreen").scrollIntoView({behavior:"smooth"});
+
+  // Send email via EmailJS
+  const sendEl = document.getElementById("sendStatus");
+  sendEl.textContent = "📨 Отправка... · Sending... · 傳送中...";
+  sendEl.className = "send-status";
+
+  try {
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      student_name:   name,
+      student_id:     sid,
+      student_runame: runame,
+      student_email:  email,
+      student_notes:  notes || "—",
+      total_score:    total,
+      score_detail:   detail,
+      teacher_email:  TEACHER_EMAIL,
+      submitted_at:   now,
+    });
+    sendEl.textContent = "✅ Результаты отправлены на email · Results sent to email · 成績已發送到郵箱！";
+    sendEl.className = "send-status ok";
+  } catch(err){
+    sendEl.textContent = "⚠️ Не удалось отправить email (EmailJS не настроен) · Email not sent (EmailJS not configured) · 郵件未發送（需要設定EmailJS）";
+    sendEl.className = "send-status err";
+    console.error("EmailJS error:", err);
+  }
+}
+
+/* ============ INIT ============ */
+initMatch(5); initMatch(6);
+initSort9(); initSort10();
+startTimer();
+</script>
+</body>
+</html>
