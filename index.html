@@ -1,1 +1,1502 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Семестровый экзамен · Уроки 9–16 · Ру́сский язы́к</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>emailjs.init('fcPVwgpMK7uXx_D3B');</script>
+<style>
+:root{
+  --bg:#FBF7F0;--card:#FFFFFF;--terra:#B85042;--terra-dark:#9c4133;
+  --clay:#A7592E;--sage:#5C8374;--sage-dark:#456256;--sand:#F3EDE2;
+  --orange:#C0683E;--gold:#D98E04;--muted:#7A6A5C;--ink:#3a3128;
+  --ink-soft:#7A6A5C;--line:#E8DDD0;--green:#3d8a52;--green-soft:#dff0e6;
+  --red-soft:#f8e4df;--radius:18px;--shadow:0 3px 14px rgba(120,80,50,.13);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{
+  font-family:Tahoma,Verdana,Arial,"Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif;
+  background:var(--bg);
+  background-image:radial-gradient(circle at 10% 8%,#FFF4D9 0,transparent 28%),radial-gradient(circle at 88% 90%,#EDE0D4 0,transparent 35%);
+  color:var(--ink);min-height:100vh;padding:14px 12px 60px;
+}
+.wrap{max-width:900px;margin:0 auto}
+
+header{
+  background:linear-gradient(120deg,var(--terra) 0%,#7A3020 100%);
+  color:#FFF8F5;border-radius:22px;padding:20px 22px 16px;
+  box-shadow:var(--shadow);margin-bottom:12px;
+}
+header h1{font-size:1.4rem;letter-spacing:.3px}
+header .sub{margin-top:6px;font-size:.82rem;opacity:.93;line-height:1.75}
+
+.timer-bar{
+  background:linear-gradient(120deg,#5a1e10,#7A3020);
+  border-radius:14px;padding:10px 20px;margin-bottom:18px;
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  box-shadow:var(--shadow);
+}
+.timer-label{color:#FFD9CC;font-size:.78rem;font-weight:700}
+.timer-display{
+  font-size:1.6rem;font-weight:700;color:#FFF;
+  letter-spacing:2px;font-variant-numeric:tabular-nums;
+  background:rgba(0,0,0,.25);border-radius:10px;padding:4px 16px;
+}
+.timer-display.warn{color:#FFD066}
+.timer-display.urgent{color:#FF8066;animation:pulse .7s infinite alternate}
+@keyframes pulse{from{opacity:1}to{opacity:.55}}
+.timer-msg{color:#FFD9CC;font-size:.78rem;flex:1;text-align:right}
+
+.stu-form{
+  background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:18px 18px 20px;margin-bottom:18px;border-top:4px solid var(--gold);
+}
+.stu-form h2{font-size:.95rem;color:var(--terra);margin-bottom:12px;font-weight:700}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.field-row.single{grid-template-columns:1fr}
+.field label{display:block;font-size:.74rem;font-weight:700;color:var(--muted);margin-bottom:4px}
+.field input,.field textarea{
+  width:100%;border:2px solid var(--line);border-radius:10px;
+  padding:9px 12px;font-size:.9rem;font-family:inherit;
+  background:#FFFDFA;color:var(--ink);transition:.15s;
+}
+.field textarea{resize:vertical;min-height:54px}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--terra)}
+.field input.err{border-color:var(--orange)}
+
+.scoreboard{
+  background:var(--card);border-radius:16px;box-shadow:var(--shadow);
+  padding:12px 18px;margin-bottom:18px;
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+.total-score{font-size:1.75rem;font-weight:700;color:var(--terra)}
+.score-bar{flex:1 1 200px;height:10px;background:var(--line);border-radius:999px;overflow:hidden}
+.score-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--terra),var(--gold));border-radius:999px;transition:width .4s}
+
+.task{
+  background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:20px 18px 22px;margin-bottom:18px;border-top:5px solid var(--terra);
+}
+.task-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px}
+.task-num{
+  background:var(--terra);color:#fff;border-radius:50%;
+  width:36px;height:36px;min-width:36px;font-size:1rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.task-title{flex:1}
+.task-title h2{font-size:1rem;color:var(--terra);margin-bottom:2px}
+.task-title .ml{font-size:.77rem;color:var(--ink-soft);line-height:1.65}
+.task-pts{
+  background:var(--sand);border:1.5px solid var(--line);border-radius:999px;
+  padding:4px 12px;font-size:.8rem;font-weight:700;color:var(--clay);white-space:nowrap;flex-shrink:0;
+}
+.task-pts.earned{background:var(--green-soft);border-color:var(--green);color:var(--green)}
+
+.instr{
+  background:#FDF0EB;border-left:5px solid var(--terra);border-radius:10px;
+  padding:9px 12px;font-size:.79rem;line-height:1.65;color:var(--ink-soft);margin-bottom:14px;
+}
+.instr b{color:var(--ink)}
+
+.qcard{
+  background:linear-gradient(135deg,#FDF3EE,#FBF7F0);border:2px solid #E8D0C4;
+  border-radius:14px;padding:14px 16px;margin-bottom:10px;text-align:center;
+}
+.qcard .q-ru{font-size:1.25rem;font-weight:700;color:#7A2A18;margin-bottom:4px}
+.qcard .q-sub{font-size:.78rem;color:var(--ink-soft);line-height:1.5}
+.answers{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:9px}
+.ans{
+  border:2px solid var(--line);background:#FCFFF9;border-radius:13px;
+  padding:11px 13px;text-align:left;cursor:pointer;font-size:.86rem;
+  line-height:1.5;transition:.15s;font-family:inherit;
+}
+.ans:hover{border-color:var(--terra)}
+.ans .ruA{font-size:.95rem;font-weight:700;color:#7A2A18}
+.ans .gl{font-size:.75rem;color:var(--ink-soft);margin-top:2px}
+.ans.correct{background:var(--green-soft);border-color:var(--green)}
+.ans.wrong{background:var(--red-soft);border-color:var(--orange)}
+.ans:disabled{cursor:default;opacity:.95}
+.feedback{margin-top:10px;font-weight:700;font-size:.88rem;min-height:1.4em;line-height:1.6}
+.feedback.good{color:var(--green)}.feedback.bad{color:var(--orange)}
+
+.match-wrap{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.match-col{display:flex;flex-direction:column;gap:8px}
+.chip-btn{
+  background:var(--sand);border:1.5px solid var(--clay);border-radius:10px;
+  padding:10px 13px;font-size:.88rem;cursor:pointer;font-family:inherit;
+  text-align:left;transition:background .15s;line-height:1.4;
+}
+.chip-btn:hover{background:#ece1cf}
+.chip-btn.ru-chip{font-weight:700;color:var(--terra)}
+.chip-btn.tr-chip{color:var(--sage-dark)}
+.chip-btn.zh-chip{color:var(--sage-dark);font-weight:600}
+.chip-btn.selected{background:var(--gold);color:#fff;border-color:var(--gold)}
+.chip-btn.matched{background:var(--green-soft);border-color:var(--green);color:var(--sage-dark);cursor:default;pointer-events:none;opacity:.75}
+.match-status{margin-top:10px;font-size:.87rem;color:var(--clay);min-height:20px;font-weight:700}
+
+.gender-bank{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 12px}
+.gender-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:8px}
+.gender-col{
+  background:#F9F4EE;border:2px dashed var(--line);border-radius:14px;
+  padding:12px 10px;min-height:90px;cursor:pointer;transition:border-color .2s;
+}
+.gender-col:hover{border-color:var(--terra)}
+.gender-col.col-active{border-color:var(--gold);background:#FFFBF0}
+.gender-col h3{font-size:.8rem;font-weight:700;color:var(--terra);margin-bottom:8px;text-align:center;pointer-events:none}
+.gender-drop{min-height:44px;display:flex;flex-direction:column;gap:6px;pointer-events:none}
+.g-bank-word{
+  background:#FFF3D6;border:2px solid #E8D0C4;border-radius:999px;
+  padding:7px 13px;font-size:.9rem;font-weight:600;cursor:pointer;
+  font-family:inherit;transition:.12s;color:var(--ink);user-select:none;
+}
+.g-bank-word:hover{border-color:var(--terra)}
+.g-bank-word.gsel{background:var(--gold);color:#fff;border-color:var(--gold)}
+.g-bank-word.gplaced{opacity:.35;pointer-events:none}
+.g-col-word{
+  background:#F3E8E4;border:1.5px solid #D4A898;border-radius:999px;
+  padding:5px 11px;font-size:.84rem;font-weight:600;color:var(--ink);
+  display:inline-block;pointer-events:auto;cursor:pointer;
+}
+.g-col-word:hover{background:var(--red-soft)}
+.g-col-word.correct-g{background:var(--green-soft);border-color:var(--green);color:var(--sage-dark)}
+.g-col-word.wrong-g{background:var(--red-soft);border-color:var(--orange);color:var(--orange)}
+
+.ord-zone{
+  min-height:52px;border:2px dashed var(--terra);border-radius:12px;
+  padding:9px;display:flex;flex-wrap:wrap;gap:7px;align-content:flex-start;
+  margin-bottom:9px;background:#FFFAF8;transition:border-color .2s;
+}
+.ord-zone.empty::before{content:attr(data-hint);color:#C8A898;font-size:.78rem;align-self:center}
+.ord-zone.ok-zone{border-color:var(--sage);background:var(--green-soft)}
+.ord-zone.bad-zone{border-color:var(--orange);background:var(--red-soft)}
+.ord-pool{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:8px;min-height:44px}
+.w-chip{
+  border:2px solid #E8D0C4;background:#FFF3D6;color:var(--ink);
+  border-radius:999px;padding:7px 12px;font-size:.88rem;font-weight:600;
+  cursor:pointer;transition:.12s;font-family:inherit;
+}
+.w-chip:hover{border-color:var(--terra);transform:translateY(-1px)}
+.ord-zone .w-chip{background:#F3E8E4;border-color:#D4A898}
+.ord-solution{
+  margin-top:7px;padding:8px 12px;background:var(--green-soft);
+  border-radius:10px;font-size:.88rem;font-weight:700;
+  color:var(--sage-dark);line-height:1.6;display:none;
+}
+.ord-feedback{margin-top:7px;font-weight:700;font-size:.88rem;min-height:1.3em}
+.ord-feedback.good{color:var(--green)}.ord-feedback.bad{color:var(--orange)}
+
+.month-reading{
+  background:linear-gradient(135deg,#FDF3EE,#FBF7F0);border:2px solid #E8D0C4;
+  border-radius:16px;padding:16px 18px;margin-bottom:14px;line-height:1.9;
+}
+.month-reading p{font-size:.92rem;color:#3a2010;margin-bottom:2px}
+
+.phrase-target{
+  background:linear-gradient(135deg,#FDF3EE,#FBF7F0);
+  border:2px solid #E8D0C4;border-radius:14px;
+  padding:13px 15px;margin-bottom:10px;
+}
+.phrase-target .pt-zh{font-size:.98rem;font-weight:700;color:#7A2A18;margin-bottom:2px}
+.phrase-target .pt-en{font-size:.81rem;color:var(--ink-soft);font-style:italic;margin-bottom:1px}
+.phrase-target .pt-vi{font-size:.81rem;color:var(--sage-dark)}
+
+.btn{
+  border:none;border-radius:999px;cursor:pointer;
+  font-size:.9rem;font-weight:700;padding:9px 22px;
+  background:var(--terra);color:#FFF;box-shadow:var(--shadow);
+  transition:.15s;font-family:inherit;
+}
+.btn:hover{background:var(--terra-dark)}
+.btn.ghost{background:#FFF;color:var(--terra);border:2px solid var(--terra)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn.ghost.done{background:var(--sage-dark);color:#fff;border-color:var(--sage-dark);cursor:default;opacity:.8}
+.btn.ghost.done::before{content:'✔ '}
+/* Attempt-stage colours for the Check button (tasks 1–9) */
+.btn.ghost.tried-1{background:#e8d5c0;color:#6b3a1f;border-color:#b07040}
+.btn.ghost.tried-2{background:#c8824a;color:#fff;border-color:#9a5a28}
+.btn.ghost.tried-3{background:#7a4020;color:#fff;border-color:#5a2a10;cursor:default;opacity:.9}
+/* Attempt counter label */
+.attempt-msg{
+  margin-top:8px;text-align:center;font-size:.78rem;font-weight:700;
+  color:var(--clay);min-height:1.2em;line-height:1.6;
+}
+.attempt-msg.warn{color:var(--orange)}
+.btnrow{display:flex;gap:10px;justify-content:center;margin-top:13px;flex-wrap:wrap}
+
+.submit-row{text-align:center;margin:24px 0 8px}
+.submit-btn{
+  border:none;border-radius:999px;cursor:pointer;font-size:1.05rem;font-weight:700;
+  padding:14px 44px;background:linear-gradient(120deg,var(--terra),var(--clay));
+  color:#FFF;box-shadow:var(--shadow);transition:.15s;font-family:inherit;
+}
+.submit-btn:hover{filter:brightness(1.1)}
+.submit-btn:disabled{opacity:.45;cursor:default}
+
+.final-card{
+  background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:30px 20px;text-align:center;margin-top:18px;display:none;
+}
+.final-card.shown{display:block}
+.final-emoji{font-size:3.5rem;margin-bottom:8px}
+.final-score{font-size:2.4rem;font-weight:700;color:var(--terra);margin:6px 0}
+.grade-badge{
+  display:inline-block;font-size:1.2rem;font-weight:700;
+  background:linear-gradient(135deg,var(--terra),var(--clay));
+  color:#fff;border-radius:14px;padding:8px 24px;margin:10px 0;box-shadow:var(--shadow);
+}
+.final-msg{font-size:.9rem;color:var(--ink-soft);line-height:1.8;margin-top:8px}
+.send-status{
+  margin-top:14px;font-size:.86rem;font-weight:700;
+  padding:10px 18px;border-radius:12px;display:none;
+}
+.send-status.ok{background:var(--green-soft);color:var(--green)}
+.send-status.err{background:var(--red-soft);color:var(--orange)}
+
+footer{text-align:center;margin-top:18px;font-size:.71rem;color:var(--ink-soft);line-height:1.75}
+
+.overlay{
+  display:none;position:fixed;inset:0;background:rgba(60,20,10,.82);
+  z-index:999;align-items:center;justify-content:center;flex-direction:column;
+}
+.overlay.shown{display:flex}
+.overlay-box{
+  background:var(--card);border-radius:22px;padding:34px 32px;text-align:center;
+  max-width:420px;box-shadow:0 8px 40px rgba(0,0,0,.4);
+}
+.overlay-box h2{color:var(--terra);font-size:1.5rem;margin-bottom:10px}
+.overlay-box p{color:var(--ink-soft);font-size:.9rem;line-height:1.7;margin-bottom:16px}
+
+@media(max-width:620px){
+  header h1{font-size:1.1rem}
+  .field-row{grid-template-columns:1fr}
+  .answers{grid-template-columns:1fr}
+  .match-wrap{grid-template-columns:1fr}
+  .gender-cols{grid-template-columns:1fr}
+  .w-chip{font-size:.8rem;padding:6px 10px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- TIME'S UP OVERLAY -->
+<div class="overlay" id="timesUpOverlay">
+  <div class="overlay-box">
+    <div style="font-size:2.8rem">⏱</div>
+    <h2>Вре́мя вы́шло! · Time's Up! · 時間到！</h2>
+    <p>
+      Экза́мен автомати́чески отправля́ется.<br>
+      The exam is being submitted automatically.<br>
+      考卷正在自動提交。<br>
+      Bài thi đang được nộp tự động.
+    </p>
+    <button class="btn" onclick="document.getElementById('timesUpOverlay').classList.remove('shown')">OK</button>
+  </div>
+</div>
+
+<header>
+  <h1>📝 Семестровый экза́мен · Semester Exam · 期末考試 · Thi Học Kỳ</h1>
+  <div class="sub">
+    Ру́сский язы́к · Уро́ки 9–16 · Russian Language · 俄語 · Tiếng Nga<br>
+    10 зада́ний · 70 балло́в · 10 questions · 70 points · 10 題 · 70 分 · 10 câu hỏi · 70 điểm
+  </div>
+</header>
+
+<div class="timer-bar">
+  <span class="timer-label">⏱ Вре́мя · Time · 時間 · Thời gian</span>
+  <span class="timer-display" id="timerDisplay">60:00</span>
+  <span class="timer-msg" id="timerMsg">Мо́жно возвраща́ться к зада́ниям · You may revise answers · 可以修改答案 · Có thể xem lại đáp án</span>
+</div>
+
+<!-- STUDENT INFO -->
+<div class="stu-form">
+  <h2>👤 Да́нные студе́нта · Student Information · 學生資料 · Thông tin sinh viên</h2>
+  <div class="field-row">
+    <div class="field">
+      <label>姓名 · Full Name · Họ và tên *</label>
+      <input id="stuName" type="text" placeholder="e.g. 阮氏香 / Nguyễn Thị Hương">
+    </div>
+    <div class="field">
+      <label>學號 · Student ID · Mã sinh viên *</label>
+      <input id="stuId" type="text" placeholder="e.g. S1234567">
+    </div>
+  </div>
+  <div class="field-row">
+    <div class="field">
+      <label>Ру́сское и́мя · Russian Name · 俄語名（必填）· Tên tiếng Nga *</label>
+      <input id="stuRuName" type="text" placeholder="e.g. Ната́ша / Ива́н / Natasha (обяза́тельно · required · 必填 · bắt buộc)">
+    </div>
+    <div class="field">
+      <label>Email студе́нта · Student Email · 學生信箱 · Email sinh viên *</label>
+      <input id="stuEmail" type="email" placeholder="your@email.com">
+    </div>
+  </div>
+  <div class="field-row single">
+    <div class="field">
+      <label>Приме́чания · Notes · 備註（可選）· Ghi chú (tuỳ chọn)</label>
+      <textarea id="stuNotes" placeholder="Optional notes · 選填備註 · Ghi chú tuỳ ý…"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- SCOREBOARD -->
+<div class="scoreboard">
+  <div>
+    <div style="font-size:.77rem;color:var(--muted);font-weight:700">Счёт · Score · 得分 · Điểm số</div>
+    <div class="total-score" id="totalDisplay">0 / 70</div>
+  </div>
+  <div style="flex:1 1 200px">
+    <div class="score-bar"><i id="scoreBarFill" style="width:0%"></i></div>
+    <div style="font-size:.8rem;font-weight:700;color:var(--ink-soft);margin-top:5px" id="scorePercent">0%</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+  ЗАДАНИЕ 1 · Vocabulary MC: RU → ZH/EN/VI (погода + урок 13-15)
+══════════════════════════════════════════ -->
+<div class="task" id="task1">
+  <div class="task-header">
+    <div class="task-num">1</div>
+    <div class="task-title">
+      <h2>Слова́: ру́сский → перево́д · RU → Translation · 俄語→翻譯 · Nga → Dịch</h2>
+      <div class="ml">Уро́ки 13–16 + пого́да · Вы́берите пра́вильное значе́ние · Choose the correct meaning</div>
+    </div>
+    <div class="task-pts" id="pts1">2 pt</div>
+  </div>
+  <div class="instr">
+    <b>RU:</b> Вы́берите пра́вильный пе́ревод ру́сского сло́ва. ·
+    <b>EN:</b> Choose the correct translation of the Russian word. ·
+    <b>中文：</b>選出俄語單詞的正確翻譯。 ·
+    <b>VI:</b> Chọn bản dịch đúng của từ tiếng Nga.
+  </div>
+  <div id="mc1body"></div>
+  <div class="btnrow"><button class="btn ghost" onclick="checkMCTask(1)">✔ Прове́рить · Check · 送出 · Nộp</button></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+  ЗАДАНИЕ 2 · Vocabulary MC: ZH/EN/VI → RU
+══════════════════════════════════════════ -->
+<div class="task" id="task2">
+  <div class="task-header">
+    <div class="task-num">2</div>
+    <div class="task-title">
+      <h2>Перево́д → ру́сский · Translation → RU · 翻譯→俄語 · Dịch → Tiếng Nga</h2>
+      <div class="ml">Уро́ки 15–16 + лотере́я · Вы́берите ру́сское сло́во</div>
+    </div>
+    <div class="task-pts" id="pts2">2 pt</div>
+  </div>
+  <div class="instr">
+    <b>RU:</b> Вы́берите ру́сское сло́во, соотве́тствующее пере́воду. ·
+    <b>EN:</b> Choose the Russian word matching the translation. ·
+    <b>中文：</b>選出符合翻譯的俄語單詞。 ·
+    <b>VI:</b> Chọn từ tiếng Nga phù hợp với bản dịch.
+  </div>
+  <div id="mc2body"></div>
+  <div class="btnrow"><button class="btn ghost" onclick="checkMCTask(2)">✔ Прове́рить · Check · 送出 · Nộp</button></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+  ЗАДАНИЕ 3 · Matching: уроки 13–14
+══════════════════════════════════════════ -->
+<div class="task" id="task3">
+  <div class="task-header">
+    <div class="task-num">3</div>
+    <div class="task-title">
+      <h2>Па́ры слов · Word Pairs · 詞語配對 · Ghép từ</h2>
+      <div class="ml">Уро́ки 13–14 · Соедини́те ру́сское сло́во с пере́водом</div>
+    </div>
+    <div class="task-pts" id="pts3">7 pt</div>
+  </div>
+  <div class="instr">
+    <b>RU:</b> Нажмите ру́сское сло́во сле́ва, зате́м его перево́д спра́ва. ·
+    <b>EN:</b> Tap a Russian word on the left, then its translation on the right. ·
+    <b>中文：</b>點左欄俄語單詞，再點右欄對應翻譯。 ·
+    <b>VI:</b> Chạm vào từ tiếng Nga bên trái, rồi chạm vào bản dịch bên phải.
+  </div>
+  <div class="match-wrap"><div class="match-col" id="m3ru"></div><div class="match-col" id="m3tr"></div></div>
+  <div class="match-status" id="m3status"></div>
+  <div class="btnrow">
+    <button class="btn ghost" onclick="resetMatch(3)">↺ Сно́ва · Reset · 重置 · Làm lại</button>
+    <button class="btn ghost" id="m3check" onclick="submitMatch(3)" style="display:none">✔ Прове́рить · Check · 送出 · Nộp</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+  ЗАДАНИЕ 4 · Matching: уроки 15–16 + лотерея
+══════════════════════════════════════════ -->
+<div class="task" id="task4">
+  <div class="task-header">
+    <div class="task-num">4</div>
+    <div class="task-title">
+      <h2>Па́ры слов · Word Pairs · 詞語配對 · Ghép từ</h2>
+      <div class="ml">Уро́ки 15–16 + лотере́я · Соедини́те ру́сское сло́во с пере́водом</div>
+    </div>
+    <div class="task-pts" id="pts4">7 pt</div>
+  </div>
+  <div class="instr">
+    <b>RU:</b> Нажмите ру́сское сло́во сле́ва, зате́м его перево́д спра́ва. ·
+    <b>EN:</b> Tap a Russian word on the left, then its translation on the right. ·
+    <b>中文：</b>點左欄俄語單詞，再點右欄對應翻譯。 ·
+    <b>VI:</b> Chạm vào từ tiếng Nga bên trái, rồi chạm vào bản dịch bên phải.
+  </div>
+  <div class="match-wrap"><div class="match-col" id="m4ru"></div><div class="match-col" id="m4tr"></div></div>
+  <div class="match-status" id="m4status"></div>
+  <div class="btnrow">
+    <button class="btn ghost" onclick="resetMatch(4)">↺ Сно́ва · Reset · 重置 · Làm lại</button>
+    <button class="btn ghost" id="m4check" onclick="submitMatch(4)" style="display:none">✔ Прове́рить · Check · 送出 · Nộp</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+  ЗАДАНИЕ 5 · Грамматический род
+══════════════════════════════════════════ -->
+<div class="task" id="task5">
+  <div class="task-header">
+    <div class="task-num">5</div>
+    <div class="task-title">
+      <h2>Грамматический род · Grammatical Gender · 語法性別 · Giống từ vựng</h2>
+      <div class="ml">Мужско́й / Же́нский / Сре́дний · M / F / N</div>
+    </div>
+    <div class="task-pts" id="pts5">8 pt</div>
+  </div>
+  <div class="instr">
+    <b>RU:</b> Нажмите сло́во в ба́нке сло́в, зате́м нажмите нужну́ю коло́нку. Нажмите сло́во в коло́нке — верну́ть в банк. ·
+    <b>EN:</b> Tap a word in the bank, then tap the correct gender column. Tap a placed word to return it. ·
+    <b>中文：</b>點詞庫中的詞，再點對應性別欄。點欄中的詞可退回。 ·
+    <b>VI:</b> Chạm vào từ trong ngân hàng từ, rồi chạm vào cột giống phù hợp.
+  </div>
+  <div class="gender-bank" id="g5bank"></div>
+  <div class="gender-cols">
+    <div class="gender-col" id="gcol-m" onclick="gColClick('m')">
+      <h3>♂ Мужско́й · M · 陽性 · Giống đực</h3>
+      <div class="gender-drop" id="gdrop-m"></div>
+    </div>
+    <div class="gender-col" id="gcol-f" onclick="gColClick('f')">
+      <h3>♀ Же́нский · F · 陰性 · Giống cái</h3>
+      <div class="gender-drop" id="gdrop-f"></div>
+    </div>
+    <div class="gender-col" id="gcol-n" onclick="gColClick('n')">
+      <h3>⚪ Сре́дний · N · 中性 · Giống trung</h3>
+      <div class="gender-drop" id="gdrop-n"></div>
+    </div>
+  </div>
+  <div class="feedback" id="gFeedback"></div>
+  <div class="btnrow">
+    <button class="btn ghost" onclick="resetGender()">↺ Сно́ва · Reset · 重置 · Làm lại</button>
+    <button class="btn ghost" onclick="checkGender()">✔ Прове́рить · Check · 送出 · Nộp</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+  ЗАДАНИЕ 6 · Дни недели с предлогом В/ВО по порядку
+══════════════════════════════════════════ -->
+<div class="task" id="task6">
+  <div class="task-header">
+    <div class="task-num">6</div>
+    <div class="task-title">
+      <h2>«В/во + день» по поря́дку · Days with «в/во» in Order · 「在星期…」順序 · «Vào thứ…» theo thứ tự</h2>
+      <div class="ml">
+        Предло́жный паде́ж · Prepositional case · 前置格（в/во＋星期）· Cách giới từ (в/во + ngày)<br>
+        ⚠ Здесь дни неде́ли с предло́гом «в/во» (не имени́тельный паде́ж!) · These are days WITH the preposition «в/во», not the nominative form!<br>
+        ⚠ 這裡是帶前置詞「в/во」的星期格式，不是原形！· Đây là dạng ngày trong tuần kèm giới từ «в/во», không phải dạng nguyên thể!
+      </div>
+    </div>
+    <div class="task-pts" id="pts6">9 pt</div>
+  </div>
+  <div class="instr">
+    <b>RU:</b> Расставьте фо́рмы «в/во + день неде́ли» от понеде́льника (1) до воскресе́нья (7). ·
+    <b>EN:</b> Put the prepositional forms «в/во + day» Monday (1) → Sunday (7). Tap below to add, tap in answer to remove. ·
+    <b>中文：</b>將「в/во＋星期」的形式從星期一（1）排到星期日（7）。點下方加入，點答案欄移回。 ·
+    <b>VI:</b> Sắp xếp các dạng «в/во + ngày» từ thứ Hai (1) đến Chủ nhật (7).
+  </div>
+  <div class="ord-zone empty" id="oz6" data-hint="← 點下方 / Tap days below / Các dạng ngày ở dưới"></div>
+  <div class="ord-pool" id="op6"></div>
+  <div class="ord-feedback" id="of6"></div>
+  <div class="ord-solution" id="os6"></div>
+  <div class="btnrow">
+    <button class="btn ghost" onclick="resetOrd(6)">↺ Сно́ва · Reset · 重置 · Làm lại</button>
+    <button class="btn ghost" onclick="checkOrd(6)">✔ Прове́рить · Check · 送出 · Nộp</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+  ЗАДАНИЕ 7 · «В...» + действие (текст ZH+EN+VI)
+══════════════════════════════════════════ -->
+<div class="task" id="task7">
+  <div class="task-header">
+    <div class="task-num">7</div>
+    <div class="task-title">
+      <h2>«В ...» + де́йствие · «В...» + Activity · 「在星期…」＋活動 · «Vào thứ…» + hoạt động</h2>
+      <div class="ml">Уро́к 13 · Прочитайте текст и соедините дни с действиями</div>
+    </div>
+    <div class="task-pts" id="pts7">6 pt</div>
+  </div>
+  <div class="instr">
+    <b>RU:</b> Прочита́йте текст и соедини́те день неде́ли с де́йствием. ·
+    <b>EN:</b> Read the text and match each day with its activity. ·
+    <b>中文：</b>閱讀課文，將星期幾與對應活動配對。 ·
+    <b>VI:</b> Đọc đoạn văn và ghép ngày trong tuần với hoạt động tương ứng.
+  </div>
+  <div class="month-reading">
+    <p>🇹🇼 <b>星期一</b>我要休息。 · 🇬🇧 <b>On Monday</b> I will rest. · 🇻🇳 <b>Thứ Hai</b> tôi sẽ nghỉ ngơi.</p>
+    <p>🇹🇼 <b>星期二</b>我去大學。 · 🇬🇧 <b>On Tuesday</b> I go to university. · 🇻🇳 <b>Thứ Ba</b> tôi đi học ở trường đại học.</p>
+    <p>🇹🇼 <b>星期四</b>我搭車去台北。 · 🇬🇧 <b>On Thursday</b> I go to Taipei by transport. · 🇻🇳 <b>Thứ Năm</b> tôi đi xe lên Đài Bắc.</p>
+    <p>🇹🇼 <b>星期五</b>我要拍照。 · 🇬🇧 <b>On Friday</b> I will take photos. · 🇻🇳 <b>Thứ Sáu</b> tôi sẽ chụp ảnh.</p>
+    <p>🇹🇼 <b>星期六</b>我和朋友去山上。 · 🇬🇧 <b>On Saturday</b> I go to the mountains with a friend. · 🇻🇳 <b>Thứ Bảy</b> tôi đi lên núi với bạn.</p>
+    <p>🇹🇼 <b>星期日</b>我要飛去越南。 · 🇬🇧 <b>On Sunday</b> I will fly to Vietnam. · 🇻🇳 <b>Chủ nhật</b> tôi sẽ bay về Việt Nam.</p>
+  </div>
+  <div class="match-wrap"><div class="match-col" id="m7ru"></div><div class="match-col" id="m7tr"></div></div>
+  <div class="match-status" id="m7status"></div>
+  <div class="btnrow">
+    <button class="btn ghost" onclick="resetMatch(7)">↺ Сно́ва · Reset · 重置 · Làm lại</button>
+    <button class="btn ghost" id="m7check" onclick="submitMatch(7)" style="display:none">✔ Прове́рить · Check · 送出 · Nộp</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+  ЗАДАНИЕ 8 · Месяцы по порядку
+══════════════════════════════════════════ -->
+<div class="task" id="task8">
+  <div class="task-header">
+    <div class="task-num">8</div>
+    <div class="task-title">
+      <h2>Ме́сяцы по поря́дку · Months in Order · 月份順序 · Thứ tự các tháng</h2>
+      <div class="ml">От января́ (1) до декабря́ (12) · January → December · 一月→十二月</div>
+    </div>
+    <div class="task-pts" id="pts8">10 pt</div>
+  </div>
+  <div class="instr">
+    <b>RU:</b> Расставьте ме́сяцы по поря́дку от января́ до декабря́. ·
+    <b>EN:</b> Put the months in order Jan → Dec. ·
+    <b>中文：</b>將月份從一月排到十二月。 ·
+    <b>VI:</b> Sắp xếp các tháng từ tháng Một đến tháng Mười hai.
+  </div>
+  <div class="ord-zone empty" id="oz8" data-hint="← 點下方月份 / Tap months below / Các tháng ở dưới"></div>
+  <div class="ord-pool" id="op8"></div>
+  <div class="ord-feedback" id="of8"></div>
+  <div class="ord-solution" id="os8"></div>
+  <div class="btnrow">
+    <button class="btn ghost" onclick="resetOrd(8)">↺ Сно́ва · Reset · 重置 · Làm lại</button>
+    <button class="btn ghost" onclick="checkOrd(8)">✔ Прове́рить · Check · 送出 · Nộp</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+  ЗАДАНИЕ 9 · Погода: пары слов (RU ↔ ZH/EN/VI)
+══════════════════════════════════════════ -->
+<div class="task" id="task9">
+  <div class="task-header">
+    <div class="task-num">9</div>
+    <div class="task-title">
+      <h2>Пого́да: па́ры · Weather Pairs · 天氣配對 · Ghép từ thời tiết</h2>
+      <div class="ml">Слева — ру́сское сло́во · Спра́ва — пере́вод (ZH / EN / VI)</div>
+    </div>
+    <div class="task-pts" id="pts9">8 pt</div>
+  </div>
+  <div class="instr">
+    <b>RU:</b> Нажмите ру́сское сло́во сле́ва, зате́м его перево́д спра́ва. ·
+    <b>EN:</b> Tap the Russian word on the left, then its translation on the right. ·
+    <b>中文：</b>點左欄俄語詞，再點右欄對應翻譯。 ·
+    <b>VI:</b> Chạm vào từ tiếng Nga bên trái, rồi bản dịch bên phải.
+  </div>
+  <div class="match-wrap"><div class="match-col" id="m9ru"></div><div class="match-col" id="m9tr"></div></div>
+  <div class="match-status" id="m9status"></div>
+  <div class="btnrow">
+    <button class="btn ghost" onclick="resetMatch(9)">↺ Сно́ва · Reset · 重置 · Làm lại</button>
+    <button class="btn ghost" id="m9check" onclick="submitMatch(9)" style="display:none">✔ Прове́рить · Check · 送出 · Nộp</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+  ЗАДАНИЕ 10 · Соста́вь предложе́ние — витами́н Цэ + пого́да
+══════════════════════════════════════════ -->
+<div class="task" id="task10">
+  <div class="task-header">
+    <div class="task-num">10</div>
+    <div class="task-title">
+      <h2>Соста́вь предложе́ние · Build the Sentence · 組合句子 · Ghép câu</h2>
+      <div class="ml">Витами́н Цэ + пого́да · Vitamin C & Weather sentences · 維生素C＋天氣句子</div>
+    </div>
+    <div class="task-pts" id="pts10">11 pt</div>
+  </div>
+  <div class="instr">
+    <b>RU:</b> Нажима́йте на гру́ппы слов в пра́вильном поря́дке. Нажмите в стро́ке отве́та — верну́ть гру́ппу. Предло́ги (помечены как «介詞／prep.／giới từ») всегда стоят пе́ред существи́тельным и сочета́ются и́менно с ним. ·
+    <b>EN:</b> Tap word-groups in the correct order. Tap in the answer zone to return a group. Prepositions (marked «介詞／prep.／giới từ») always come before and combine with a noun. ·
+    <b>中文：</b>按正確順序點詞組；點答案欄中的詞組可取回。標有「介詞／prep.／giới từ」的詞為介詞，須與後面的名詞搭配使用。 ·
+    <b>VI:</b> Chạm vào các cụm từ theo đúng thứ tự. Chạm vào cụm từ trong ô trả lời để lấy lại. Giới từ (ghi chú «介詞／prep.／giới từ») luôn đứng trước danh từ và kết hợp với danh từ đó.
+  </div>
+  <div style="font-size:.84rem;font-weight:700;color:var(--ink-soft);display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap">
+    <span id="p10qnum">Предложе́ние 1 / 7</span>
+    <div style="flex:1;height:7px;background:var(--line);border-radius:999px;overflow:hidden">
+      <i id="p10bar" style="display:block;height:100%;background:linear-gradient(90deg,var(--terra),var(--gold));border-radius:999px;transition:width .3s;width:0%"></i>
+    </div>
+    <span style="background:var(--green-soft);color:var(--green);border-radius:999px;padding:3px 13px" id="p10score">⭐ 0</span>
+  </div>
+  <div id="p10body"></div>
+</div>
+
+<!-- SUBMIT -->
+<div class="submit-row">
+  <button class="submit-btn" id="submitBtn" onclick="submitExam()">
+    📨 Отосла́ть экза́мен · Submit Exam · 提交考卷 · Nộp bài thi
+  </button>
+</div>
+
+<!-- FINAL -->
+<div class="final-card" id="finalCard">
+  <div class="final-emoji" id="finalEmoji">🎓</div>
+  <div class="final-score" id="finalScore">0 / 70</div>
+  <div class="grade-badge" id="gradeBadge"></div>
+  <div class="final-msg" id="finalMsg"></div>
+  <div class="send-status" id="sendStatus"></div>
+</div>
+
+<footer>
+  Уда́рения отме́чены во всех ру́сских слова́х · Stress marks on all Russian words · 所有俄語單詞均標有重音 · Tất cả từ tiếng Nga đều có dấu trọng âm<br>
+  Иеро́глифы — то́лько традицио́нные · Traditional Chinese characters only · 僅繁體中文<br>
+  中原大學 · 俄文進階 · Уро́ки 9–16 · Copyright © 2026-2036 : Vladimir Kurdyumov · 耿華
+</footer>
+</div>
+
+<script>
+/* ════════ TIMER ════════ */
+const examStartTime = new Date(); // capture exact start moment
+let timerSecs = 60 * 60;
+let timerDone = false;
+const timerDisplay = document.getElementById('timerDisplay');
+const timerMsg    = document.getElementById('timerMsg');
+
+function formatTime(s){
+  const m=Math.floor(s/60), sec=s%60;
+  return String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');
+}
+const timerInterval = setInterval(()=>{
+  if(timerDone) return;
+  timerSecs--;
+  timerDisplay.textContent=formatTime(timerSecs);
+  if(timerSecs<=300) timerDisplay.className='timer-display warn';
+  if(timerSecs<=60)  timerDisplay.className='timer-display urgent';
+  if(timerSecs<=0){
+    clearInterval(timerInterval); timerDone=true;
+    timerDisplay.textContent='00:00';
+    timerMsg.textContent='⏱ Вре́мя вы́шло! · Time\'s up! · 時間到！· Hết giờ!';
+    document.getElementById('timesUpOverlay').classList.add('shown');
+    setTimeout(()=>{
+      document.getElementById('timesUpOverlay').classList.remove('shown');
+      submitExam();
+    },3500);
+  }
+},1000);
+
+/* ════════ SCORE STATE ════════ */
+const MAX=70;
+const scores={};
+const done={};
+for(let i=1;i<=10;i++){scores[i]=0;done[i]=false;}
+function totalScore(){return Object.values(scores).reduce((a,b)=>a+b,0);}
+function updateUI(){
+  const t=totalScore();
+  document.getElementById('totalDisplay').textContent=t+' / '+MAX;
+  document.getElementById('scoreBarFill').style.width=(t/MAX*100).toFixed(1)+'%';
+  document.getElementById('scorePercent').textContent=(t/MAX*100).toFixed(0)+'%';
+}
+function award(n,pts,max){
+  scores[n]=pts; done[n]=true;
+  const el=document.getElementById('pts'+n);
+  if(el){el.textContent=pts+' / '+max; if(pts===max) el.classList.add('earned');}
+  updateUI();
+  markDone(n);
+}
+function markDone(n){
+  const task=document.getElementById('task'+n);
+  if(!task) return;
+  // Tasks 1–9: only visually mark as checked, keep editable until final submit
+  // Task 10: fully lock after each phrase (handled separately in checkPhrase)
+  if(n===10){
+    task.querySelectorAll('.btn.ghost').forEach(b=>{
+      b.classList.add('done');
+      b.disabled=true;
+    });
+  }
+  // For tasks 1–9: do nothing extra — student can still reset/re-check
+}
+const TASK_MAX={1:2,2:2,3:7,4:7,5:8,6:9,7:6,8:10,9:8,10:11};
+function unmarkDone(n){
+  scores[n]=0; done[n]=false;
+  const el=document.getElementById('pts'+n);
+  if(el){el.textContent=(TASK_MAX[n]||7)+' pt'; el.classList.remove('earned');}
+  updateUI();
+  const task=document.getElementById('task'+n);
+  if(!task) return;
+  task.querySelectorAll('.btn.ghost.done').forEach(b=>{
+    b.classList.remove('done');
+    b.disabled=false;
+  });
+}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function norm(s){return s.trim().toLowerCase().replace(/\u0301/g,'').replace(/ё/g,'е');}
+
+/* ════════ ATTEMPTS (tasks 1–9, max 3 checks each) ════════ */
+const MAX_TRIES = 3;
+const attempts = {}; // attempts[n] = number of times Check was pressed
+for(let i=1;i<=9;i++) attempts[i]=0;
+
+const ATTEMPT_MSGS = [
+  // after 1st check → 2 left
+  'Осталось 2 попытки · 2 attempts left · 還有2次機會 · Còn 2 lần thử',
+  // after 2nd check → 1 left
+  'Осталась 1 попытка · 1 attempt left · 還有1次機會 · Còn 1 lần thử',
+];
+
+// Returns false if this task is already exhausted (≥ MAX_TRIES)
+function canCheck(n){
+  return attempts[n] < MAX_TRIES;
+}
+
+// Call after each Check press for tasks 1–9.
+// Updates button colour, shows attempt counter, locks if exhausted.
+// Returns true if the check should proceed, false if already locked.
+function registerAttempt(n){
+  if(attempts[n] >= MAX_TRIES) return false; // already locked
+  attempts[n]++;
+  _applyAttemptUI(n);
+  return true;
+}
+
+function _applyAttemptUI(n){
+  const task = document.getElementById('task'+n);
+  if(!task) return;
+
+  // Find the Check button (ghost btn that is NOT a Reset btn)
+  const checkBtn = [...task.querySelectorAll('.btn.ghost')]
+    .find(b => b.textContent.includes('Прове́рить') || b.textContent.includes('Проверить'));
+
+  // Remove previous tried-* classes
+  if(checkBtn){
+    checkBtn.classList.remove('tried-1','tried-2','tried-3');
+  }
+
+  // Find or create the attempt-msg element (insert after btnrow)
+  let msgEl = task.querySelector('.attempt-msg');
+  if(!msgEl){
+    msgEl = document.createElement('div');
+    msgEl.className = 'attempt-msg';
+    const btnrow = task.querySelector('.btnrow');
+    if(btnrow) btnrow.insertAdjacentElement('afterend', msgEl);
+    else task.appendChild(msgEl);
+  }
+
+  const used = attempts[n];
+  if(used >= MAX_TRIES){
+    // Exhausted — lock
+    if(checkBtn){
+      checkBtn.classList.add('tried-3');
+      checkBtn.disabled = true;
+    }
+    msgEl.textContent = '';
+    msgEl.className = 'attempt-msg';
+    // Also lock the interactive elements
+    _lockTask(n);
+  } else {
+    // Still attempts left
+    if(checkBtn) checkBtn.classList.add('tried-'+used);
+    msgEl.textContent = ATTEMPT_MSGS[used-1] || '';
+    msgEl.className = 'attempt-msg' + (used===2 ? ' warn' : '');
+  }
+}
+
+// Hard-lock a task's interactive elements (same as final submit locking)
+function _lockTask(n){
+  if(n===1||n===2){ lockMCTask(n); }
+  else if(n===3||n===4||n===7||n===9){ lockMatch(n); }
+  else if(n===5){
+    document.querySelectorAll('.g-bank-word,.g-col-word').forEach(b=>{b.style.pointerEvents='none';});
+  }
+  else if(n===6||n===8){ lockOrd(n); }
+  // Also disable Reset button
+  const task=document.getElementById('task'+n);
+  if(task){
+    const resetBtn=[...task.querySelectorAll('.btn.ghost')]
+      .find(b=>b.textContent.includes('Сно́ва')||b.textContent.includes('Снова'));
+    if(resetBtn){resetBtn.disabled=true;resetBtn.style.opacity='.35';}
+  }
+}
+
+/* ════════ DATA ════════ */
+
+// TASK 1: RU → ZH/EN/VI (погода + лексика 13-15)
+const mc1pool = [
+  {ru:'пого́да',      correct:'weather · 天氣 · thời tiết',      opts:['weather · 天氣 · thời tiết','temperature · 溫度 · nhiệt độ','precipitation · 降水 · giáng thủy','umbrella · 雨傘 · cái ô']},
+  {ru:'температу́ра', correct:'temperature · 溫度 · nhiệt độ',    opts:['temperature · 溫度 · nhiệt độ','weather · 天氣 · thời tiết','degree · 度 · độ','wind · 風 · gió']},
+  {ru:'гра́дус',      correct:'degree · 度 · độ',                 opts:['degree · 度 · độ','temperature · 溫度 · nhiệt độ','minus · 負 · âm','humidity · 濕度 · độ ẩm']},
+  {ru:'дождь',        correct:'rain · 雨 · mưa',                  opts:['rain · 雨 · mưa','snow · 雪 · tuyết','wind · 風 · gió','thunderstorm · 雷雨 · dông']},
+  {ru:'зонт',         correct:'umbrella · 雨傘 · cái ô',          opts:['umbrella · 雨傘 · cái ô','jacket · 外套 · áo khoác','hat · 帽子 · mũ','bag · 包包 · túi']},
+  {ru:'лимо́н',       correct:'lemon · 檸檬 · chanh vàng',        opts:['lemon · 檸檬 · chanh vàng','orange · 柳橙 · cam','lime · 青檸 · chanh xanh','grapefruit · 葡萄柚 · bưởi chùm']},
+  {ru:'витами́н',     correct:'vitamin · 維生素 · vitamin',        opts:['vitamin · 維生素 · vitamin','milligram · 毫克 · miligam','mineral · 礦物質 · khoáng chất','protein · 蛋白質 · protein']},
+  {ru:'вы́игрыш',    correct:'prize/winnings · 中獎獎金 · tiền thưởng', opts:['prize/winnings · 中獎獎金 · tiền thưởng','receipt · 發票 · hóa đơn','lottery · 彩券 · xổ số','luck · 好運 · may mắn']},
+  {ru:'жа́рко',      correct:'(it is) hot · 炎熱 · nóng',         opts:['(it is) hot · 炎熱 · nóng','(it is) cold · 寒冷 · lạnh','(it is) cool · 涼爽 · mát mẻ','(it is) warm · 溫暖 · ấm']},
+  {ru:'хо́лодно',    correct:'(it is) cold · 寒冷 · lạnh',        opts:['(it is) cold · 寒冷 · lạnh','(it is) hot · 炎熱 · nóng','(it is) warm · 溫暖 · ấm','(it is) humid · 潮濕 · ẩm ướt']},
+  {ru:'магази́н',    correct:'shop/store · 商店 · cửa hàng',      opts:['shop/store · 商店 · cửa hàng','canteen · 食堂 · căng-tin','airport · 機場 · sân bay','square · 廣場 · quảng trường']},
+  {ru:'апельси́н',   correct:'orange · 柳橙 · quả cam',           opts:['orange · 柳橙 · quả cam','lemon · 檸檬 · chanh vàng','pomelo · 文旦 · bưởi','lime · 青檸 · chanh xanh']},
+];
+
+// TASK 2: ZH/EN/VI → RU
+const mc2pool = [
+  {q:'散步 · to stroll · đi dạo',                       correct:'гуля́ть',              opts:['гуля́ть','учи́ться','пить','рабо́тать']},
+  {q:'拍照 · to take photos · chụp ảnh',                correct:'фотографи́ровать',     opts:['фотографи́ровать','носи́ть','скуча́ть','есть']},
+  {q:'想家 · to miss home · nhớ nhà',                   correct:'скуча́ть по до́му',    opts:['скуча́ть по до́му','гуля́ть по до́му','есть до́ма','учи́ться до́ма']},
+  {q:'穿；戴 · to wear · mặc / đội',                   correct:'носи́ть',              opts:['носи́ть','пить','гуля́ть','учи́ться']},
+  {q:'食堂 · canteen · căng-tin',                       correct:'столо́вая',            opts:['столо́вая','ку́ртка','пло́щадь','ша́пка']},
+  {q:'外套 · jacket · áo khoác',                        correct:'ку́ртка',              opts:['ку́ртка','ша́пка','пло́щадь','столо́вая']},
+  {q:'發票；收據 · receipt · hóa đơn',                  correct:'чек',                  opts:['чек','лотере́я','вы́игрыш','уда́ча']},
+  {q:'彩券 · lottery · xổ số',                          correct:'лотере́я',             opts:['лотере́я','чек','уда́ча','вы́игрыш']},
+  {q:'好運 · luck · may mắn',                           correct:'уда́ча',              opts:['уда́ча','уста́лость','гру́сть','сча́стье']},
+  {q:'電子發票 · electronic receipt · hóa đơn điện tử', correct:'электро́нный чек',    opts:['электро́нный чек','специа́льный приз','гран-при́','пе́рвый приз']},
+  {q:'讀書；學習 · to study · học tập',                 correct:'учи́ться',             opts:['учи́ться','пить','носи́ть','есть']},
+  {q:'不下雨 · there is no rain · không mưa',           correct:'дождя́ нет',           opts:['дождя́ нет','идёт дождь','идёт снег','жа́рко']},
+];
+
+// TASK 3: matching 13–14
+const match3data = [
+  {ru:'де́лать',    tr:'to do · 做 · làm'},
+  {ru:'купи́ть',    tr:'to buy · 買 · mua'},
+  {ru:'отдыха́ть',  tr:'to rest · 休息 · nghỉ ngơi'},
+  {ru:'го́ры',      tr:'mountains · 山 · núi'},
+  {ru:'апельси́н',  tr:'orange · 柳橙 · quả cam'},
+  {ru:'ты́сяча',    tr:'thousand · 千 · một nghìn'},
+];
+
+// TASK 4: matching 15–16 + lottery + new household/everyday words
+const match4data = [
+  {ru:'чек',             tr:'receipt · 發票 · hóa đơn'},
+  {ru:'лотере́я',        tr:'lottery · 彩券 · xổ số'},
+  {ru:'уда́ча',          tr:'luck · 好運 · may mắn'},
+  {ru:'гран-при́',       tr:'grand prize · 特獎 · giải đặc biệt'},
+  {ru:'получи́ть',       tr:'to receive · 領取 · nhận'},
+  {ru:'вы́играть',       tr:'to win · 贏得；中獎 · trúng thưởng'},
+  {ru:'стол',            tr:'table · 桌子 · bàn'},
+  {ru:'стул',            tr:'chair · 椅子 · ghế'},
+  {ru:'маши́на',         tr:'car · 車；汽車 · xe ô tô'},
+  {ru:'доро́га',         tr:'road · 路；道路 · con đường'},
+  {ru:'ба́бушка',        tr:'grandmother · 奶奶；外婆 · bà'},
+  {ru:'ма́ма',           tr:'mum · 媽媽 · mẹ'},
+  {ru:'по́лка',          tr:'shelf · 書架；架子 · kệ sách'},
+  {ru:'ма́рка',          tr:'stamp · 郵票 · tem'},
+  {ru:'врач',            tr:'doctor · 醫生 · bác sĩ'},
+  {ru:'преподава́тель',  tr:'teacher · 老師；教師 · giáo viên'},
+  {ru:'ла́мпа',          tr:'lamp · 燈 · đèn'},
+  {ru:'телеви́зор',      tr:'TV · 電視機 · ti vi'},
+  {ru:'фотоаппара́т',   tr:'camera · 照相機 · máy ảnh'},
+  {ru:'су́мка',          tr:'bag · 包；手提包 · túi xách'},
+  {ru:'рюкза́к',         tr:'backpack · 背包 · ba lô'},
+  {ru:'соба́ка',         tr:'dog · 狗 · chó'},
+  {ru:'ко́шка',          tr:'cat (f) · 貓（母）· mèo (cái)'},
+  {ru:'кот',             tr:'cat (m) · 貓（公）· mèo (đực)'},
+  {ru:'дом',             tr:'house / home · 房子；家 · nhà'},
+  {ru:'окно́',           tr:'window · 窗戶 · cửa sổ'},
+];
+
+// TASK 5: gender — full expanded list (randomly 11 shown)
+const genderData = [
+  // мужской
+  {ru:'студе́нт',       g:'m'},
+  {ru:'телефо́н',       g:'m'},
+  {ru:'зонт',           g:'m'},
+  {ru:'дождь',          g:'m'},
+  {ru:'стол',           g:'m'},
+  {ru:'стул',           g:'m'},
+  {ru:'врач',           g:'m'},
+  {ru:'преподава́тель', g:'m'},
+  {ru:'телеви́зор',     g:'m'},
+  {ru:'фотоаппара́т',  g:'m'},
+  {ru:'рюкза́к',        g:'m'},
+  {ru:'кот',            g:'m'},
+  {ru:'дом',            g:'m'},
+  // женский
+  {ru:'студе́нтка',    g:'f'},
+  {ru:'лотере́я',      g:'f'},
+  {ru:'пого́да',       g:'f'},
+  {ru:'уда́ча',        g:'f'},
+  {ru:'маши́на',       g:'f'},
+  {ru:'доро́га',       g:'f'},
+  {ru:'ба́бушка',      g:'f'},
+  {ru:'ма́ма',         g:'f'},
+  {ru:'по́лка',        g:'f'},
+  {ru:'ма́рка',        g:'f'},
+  {ru:'ла́мпа',        g:'f'},
+  {ru:'су́мка',        g:'f'},
+  {ru:'соба́ка',       g:'f'},
+  {ru:'ко́шка',        g:'f'},
+  // средний
+  {ru:'кино́',         g:'n'},
+  {ru:'ра́дио',        g:'n'},
+  {ru:'окно́',         g:'n'},
+];
+// Pick a balanced random subset for the exam: 4m + 4f + 3n = 11 words
+function pickGenderSubset(){
+  const m=shuffle(genderData.filter(d=>d.g==='m')).slice(0,4);
+  const f=shuffle(genderData.filter(d=>d.g==='f')).slice(0,4);
+  const n=shuffle(genderData.filter(d=>d.g==='n')).slice(0,3);
+  return shuffle([...m,...f,...n]);
+}
+const genderExam = pickGenderSubset();
+
+// TASK 6: days WITH preposition в/во (prepositional/accusative case forms)
+const daysNom = ['в понеде́льник','во вто́рник','в сре́ду','в четве́рг','в пя́тницу','в суббо́ту','в воскресе́нье'];
+
+// TASK 7: days + activity matching — NEW shuffle (different from Japanese version)
+const match7data = [
+  {ru:'в понеде́льник', tr:'бу́ду отдыха́ть'},
+  {ru:'во вто́рник',   tr:'пойду́ в университе́т'},
+  {ru:'в четве́рг',    tr:'пое́ду в Тайбэ́й'},
+  {ru:'в пя́тницу',    tr:'бу́ду фотографи́ровать'},
+  {ru:'в суббо́ту',    tr:'пойдём в го́ры'},
+  {ru:'в воскресе́нье',tr:'улета́ю во Вьетна́м'},
+];
+
+// Pick 6 random pairs from match4data for the exam
+const match4exam = shuffle(match4data).slice(0,6);
+const months = ['янва́рь','февра́ль','март','апре́ль','май','ию́нь','ию́ль','а́вгуст','сентя́брь','октя́брь','ноя́брь','дека́брь'];
+
+// TASK 9: Weather vocabulary pairs (RU ↔ ZH/EN/VI)
+const weatherMatchPool = [
+  {key:'pogoda',    ru:'пого́да',                   tr:'天氣 · weather · thời tiết'},
+  {key:'progn',     ru:'прогно́з пого́ды',           tr:'天氣預報 · weather forecast · dự báo thời tiết'},
+  {key:'temp',      ru:'температу́ра',               tr:'溫度 · temperature · nhiệt độ'},
+  {key:'dnem',      ru:'днём',                       tr:'白天 · daytime · ban ngày'},
+  {key:'nochyu',    ru:'но́чью',                     tr:'夜裡 · at night · ban đêm'},
+  {key:'dozhd',     ru:'идёт дождь',                tr:'下雨 · it is raining · trời mưa'},
+  {key:'sneg',      ru:'идёт снег',                 tr:'下雪 · it is snowing · trời có tuyết'},
+  {key:'zharko',    ru:'жа́рко',                    tr:'炎熱 · (it is) hot · nóng'},
+  {key:'holodno',   ru:'хо́лодно',                  tr:'寒冷 · (it is) cold · lạnh'},
+  {key:'solnechno', ru:'со́лнечно',                 tr:'晴（有太陽）· sunny · nắng'},
+  {key:'oblachno',  ru:'о́блачно',                  tr:'多雲 · cloudy · nhiều mây'},
+  {key:'zont',      ru:'зонт',                       tr:'雨傘 · umbrella · cái ô'},
+  {key:'veter',     ru:'ве́тер',                    tr:'風 · wind · gió'},
+  {key:'osadki',    ru:'оса́дки',                   tr:'降水 · precipitation · giáng thủy'},
+];
+const match9exam = shuffle(weatherMatchPool).slice(0,7);
+
+// TASK 10: 7 sentences — Vitamin C + weather (1 pt each)
+// Preposition chips use a special display label but match on the bare preposition.
+// Format: display text === match text (norm() strips stress marks, so matching is safe).
+const phrases = [
+  {
+    zh:'柚子（文旦）含六十一毫克維生素C。',
+    en:'Pomelo contains sixty-one mg of vitamin C.',
+    vi:'Bưởi da xanh chứa sáu mươi mốt miligam vitamin C.',
+    groups:['В (介詞／prep.／giới từ)','поме́ло —','шестьдеся́т оди́н','миллигра́мм','витами́на Цэ.'],
+  },
+  {
+    zh:'柳橙含六十毫克維生素C。',
+    en:'An orange contains sixty mg of vitamin C.',
+    vi:'Quả cam chứa sáu mươi miligam vitamin C.',
+    groups:['В (介詞／prep.／giới từ)','апельси́не —','шестьдеся́т','миллигра́ммов','витами́на Цэ.'],
+  },
+  {
+    zh:'葡萄柚含四十五毫克維生素C。',
+    en:'A grapefruit contains forty-five mg of vitamin C.',
+    vi:'Bưởi chùm chứa bốn mươi lăm miligam vitamin C.',
+    groups:['В (介詞／prep.／giới từ)','гре́йпфруте —','со́рок пять','миллигра́ммов','витами́на Цэ.'],
+  },
+  {
+    zh:'檸檬含四十毫克維生素C。',
+    en:'A lemon contains forty mg of vitamin C.',
+    vi:'Chanh vàng chứa bốn mươi miligam vitamin C.',
+    groups:['В (介詞／prep.／giới từ)','лимо́не —','со́рок','миллигра́ммов','витами́на Цэ.'],
+  },
+  {
+    zh:'萊姆含二十九毫克維生素C。',
+    en:'A lime contains twenty-nine mg of vitamin C.',
+    vi:'Chanh xanh chứa hai mươi chín miligam vitamin C.',
+    groups:['В (介詞／prep.／giới từ)','ла́йме —','два́дцать де́вять','миллигра́ммов','витами́на Цэ.'],
+  },
+  {
+    zh:'星期二台北白天氣溫為攝氏正32度。',
+    en:'On Tuesday in Taipei the daytime temperature is plus thirty-two degrees Celsius.',
+    vi:'Thứ Ba ở Đài Bắc nhiệt độ ban ngày là +32 độ C.',
+    groups:['Во (介詞／prep.／giới từ)','вто́рник','в (介詞／prep.／giới từ)','Тайбэ́е','температу́ра днём —','плюс три́дцать два','гра́дуса Це́льсия.'],
+  },
+  {
+    zh:'冬天莫斯科下雪，非常冷。',
+    en:'In winter in Moscow it snows and it is very cold.',
+    vi:'Mùa đông ở Moskva có tuyết và rất lạnh.',
+    groups:['Зимо́й','в (介詞／prep.／giới từ)','Москве́','идёт снег','и о́чень хо́лодно.'],
+  },
+];
+const P10PTS = [1,1,1,1,1,1,1]; // 1 pt each
+
+/* ════════ BUILD MC ════════ */
+function buildMCSection(containerId, pool, taskId, isRU){
+  const box=document.getElementById(containerId);
+  const chosen=shuffle(pool).slice(0,2);
+  chosen.forEach((d,qi)=>{
+    const div=document.createElement('div');
+    div.style.marginBottom='14px';
+    const qHtml=isRU
+      ?`<div class="q-ru">${d.ru}</div><div class="q-sub">意思是？· What does this mean? · 這是什麼意思？· Nghĩa là gì?</div>`
+      :`<div class="q-ru" style="font-size:1rem">${d.q}</div><div class="q-sub">По-ру́сски？· Choose the Russian word · 選出俄語單詞 · Chọn từ tiếng Nga</div>`;
+    const opts=shuffle(d.opts.map(o=>({label:o, ok:norm(o)===norm(d.correct)})));
+    div.innerHTML=`
+      <div class="qcard">${qHtml}</div>
+      <div class="answers" id="mc${taskId}q${qi}">
+        ${opts.map(o=>`<button class="ans" onclick="mcClick(this,'mc${taskId}q${qi}','${o.ok}')">
+          <div class="ruA">${o.label}</div>
+        </button>`).join('')}
+      </div>
+      <div class="feedback" id="mcfb${taskId}q${qi}"></div>`;
+    box.appendChild(div);
+  });
+}
+buildMCSection('mc1body',mc1pool,1,true);
+buildMCSection('mc2body',mc2pool,2,false);
+
+const mcAnswers={};
+function mcClick(btn,qid,isOk){
+  // Allow re-answering before final submit: clear previous selection styling
+  const answersEl=document.getElementById(qid);
+  if(answersEl){
+    answersEl.querySelectorAll('.ans').forEach(b=>{b.classList.remove('correct','wrong');});
+  }
+  mcAnswers[qid]=(isOk==='true');
+  btn.classList.add(isOk==='true'?'correct':'wrong');
+  const fb=document.getElementById('mcfb'+qid);
+  if(fb){
+    fb.textContent=isOk==='true'?'✅ Верно! · Correct! · 正確！· Đúng rồi!':'❌ Неверно. · Incorrect. · 不正確。· Sai rồi.';
+    fb.className='feedback '+(isOk==='true'?'good':'bad');
+  }
+}
+function checkMCTask(n){
+  if(!canCheck(n)) return; // attempts exhausted
+  const q0=mcAnswers[`mc${n}q0`]===true;
+  const q1=mcAnswers[`mc${n}q1`]===true;
+  done[n]=false;
+  award(n,(q0?1:0)+(q1?1:0),2);
+  registerAttempt(n);
+}
+// Lock MC task (called only on final submit)
+function lockMCTask(n){
+  document.querySelectorAll(`#mc${n}body .ans`).forEach(b=>b.disabled=true);
+}
+
+/* ════════ MATCHING ════════ */
+const matchState={};
+function buildMatch(n,data){
+  const ruEl=document.getElementById('m'+n+'ru');
+  const trEl=document.getElementById('m'+n+'tr');
+  if(!ruEl||!trEl) return;
+  ruEl.innerHTML=''; trEl.innerHTML='';
+  matchState[n]={sel:null,matched:0,wrong:0,total:data.length,data,done:false};
+  const hasKey=data.length>0&&!!data[0].key;
+  shuffle(data).forEach(d=>{
+    const matchKey=d.key||d.ru;
+    const b=document.createElement('button');
+    b.className='chip-btn '+(hasKey?'zh-chip':'ru-chip');
+    b.textContent=d.ru; b.dataset.key=matchKey;
+    b.addEventListener('click',()=>mPickRu(n,b));
+    ruEl.appendChild(b);
+  });
+  shuffle(data).forEach(d=>{
+    const matchKey=d.key||d.ru;
+    const b=document.createElement('button');
+    b.className='chip-btn tr-chip';
+    b.textContent=d.tr; b.dataset.key=matchKey;
+    b.addEventListener('click',()=>mPickTr(n,b));
+    trEl.appendChild(b);
+  });
+}
+function mPickRu(n,b){
+  const s=matchState[n]; if(s.done||b.classList.contains('matched')) return;
+  document.querySelectorAll('#m'+n+'ru .chip-btn').forEach(x=>x.classList.remove('selected'));
+  b.classList.add('selected'); s.sel=b;
+}
+function mPickTr(n,b){
+  const s=matchState[n]; if(s.done||!s.sel||b.classList.contains('matched')) return;
+  if(b.dataset.key===s.sel.dataset.key){
+    b.classList.add('matched'); s.sel.classList.add('matched'); s.sel.classList.remove('selected');
+    s.sel=null; s.matched++;
+    document.getElementById('m'+n+'status').textContent=`✓ ${s.matched} / ${s.total}`;
+    if(s.matched===s.total){
+      document.getElementById('m'+n+'status').textContent='🎉 Все па́ры! · All matched! · 全部配對完成！· Ghép xong hết!';
+      const ck=document.getElementById('m'+n+'check');
+      if(ck) ck.style.display='inline-block';
+    }
+  } else {
+    s.wrong++;
+    document.getElementById('m'+n+'status').textContent='✗ Не та́к. Попро́буйте ещё. · Try again. · 再試一次。· Thử lại.';
+    s.sel.classList.remove('selected'); s.sel=null;
+    b.style.background='#f8e4df';
+    setTimeout(()=>b.style.background='',500);
+  }
+}
+function resetMatch(n){
+  unmarkDone(n);
+  document.getElementById('m'+n+'status').textContent='';
+  const ck=document.getElementById('m'+n+'check'); if(ck){ck.style.display='none'; ck.classList.remove('done'); ck.disabled=false;}
+  const dataMap={3:match3data,4:match4exam,7:match7data,9:match9exam};
+  buildMatch(n,dataMap[n]);
+}
+function submitMatch(n){
+  if(!canCheck(n)) return; // attempts exhausted
+  const s=matchState[n];
+  s.done=true;
+  const max=TASK_MAX[n]||7;
+  const pts=Math.min(max,Math.max(0,Math.round((s.matched/s.total)*max)-Math.floor(s.wrong/2)));
+  done[n]=false;
+  award(n,pts,max);
+  s.done=false;
+  registerAttempt(n);
+}
+// Lock match task (called only on final submit)
+function lockMatch(n){
+  document.querySelectorAll('#m'+n+'ru .chip-btn,#m'+n+'tr .chip-btn').forEach(b=>b.style.pointerEvents='none');
+}
+buildMatch(3,match3data);
+buildMatch(4,match4exam);
+buildMatch(7,match7data);
+buildMatch(9,match9exam);
+
+/* ════════ GENDER ════════ */
+let gSel=null;
+const gPlace={};
+(function buildGender(){
+  const bank=document.getElementById('g5bank');
+  shuffle(genderExam).forEach(d=>{
+    const b=document.createElement('button');
+    b.className='g-bank-word'; b.textContent=d.ru; b.dataset.ru=d.ru; b.dataset.g=d.g;
+    b.addEventListener('click',()=>{
+      if(b.classList.contains('gplaced')) return;
+      document.querySelectorAll('.g-bank-word').forEach(x=>x.classList.remove('gsel'));
+      b.classList.add('gsel'); gSel=b;
+      ['m','f','n'].forEach(g=>document.getElementById('gcol-'+g).classList.add('col-active'));
+    });
+    bank.appendChild(b);
+  });
+})();
+function gColClick(g){
+  if(!gSel) return;
+  const ru=gSel.dataset.ru;
+  if(gPlace[ru]){
+    const prevDrop=document.getElementById('gdrop-'+gPlace[ru]);
+    const existing=prevDrop.querySelector('[data-ru="'+ru+'"]');
+    if(existing) prevDrop.removeChild(existing);
+    const bankWord=document.querySelector('.g-bank-word[data-ru="'+ru+'"]');
+    if(bankWord) bankWord.classList.remove('gplaced');
+  }
+  gPlace[ru]=g;
+  gSel.classList.add('gplaced'); gSel.classList.remove('gsel');
+  ['m','f','n'].forEach(x=>document.getElementById('gcol-'+x).classList.remove('col-active'));
+  const drop=document.getElementById('gdrop-'+g);
+  const span=document.createElement('span');
+  span.className='g-col-word'; span.textContent=ru; span.dataset.ru=ru;
+  span.addEventListener('click',()=>{
+    drop.removeChild(span);
+    delete gPlace[ru];
+    const bankWord=document.querySelector('.g-bank-word[data-ru="'+ru+'"]');
+    if(bankWord) bankWord.classList.remove('gplaced');
+  });
+  drop.appendChild(span);
+  gSel=null;
+}
+function resetGender(){
+  unmarkDone(5);
+  // clear columns
+  ['m','f','n'].forEach(g=>{
+    document.getElementById('gdrop-'+g).innerHTML='';
+    document.getElementById('gcol-'+g).classList.remove('col-active');
+  });
+  // restore bank words
+  document.querySelectorAll('.g-bank-word').forEach(b=>{
+    b.classList.remove('gplaced','gsel');
+    delete gPlace[b.dataset.ru];
+  });
+  document.getElementById('gFeedback').textContent='';
+  document.getElementById('gFeedback').className='feedback';
+  gSel=null;
+}
+function checkGender(){
+  if(!canCheck(5)) return; // attempts exhausted
+  let correct=0;
+  document.querySelectorAll('.g-col-word').forEach(span=>{
+    span.classList.remove('correct-g','wrong-g');
+    const ru=span.dataset.ru;
+    const g=gPlace[ru];
+    const expected=genderExam.find(d=>d.ru===ru);
+    if(expected&&g===expected.g){correct++; span.classList.add('correct-g');}
+    else{span.classList.add('wrong-g');}
+  });
+  const fb=document.getElementById('gFeedback');
+  fb.textContent=`${correct} / ${genderExam.length} ✓`;
+  fb.className='feedback '+(correct===genderExam.length?'good':'bad');
+  const pts=Math.round((correct/genderExam.length)*8);
+  done[5]=false;
+  award(5,pts,8);
+  registerAttempt(5);
+}
+
+/* ════════ ORDERING ════════ */
+const ordState={};
+function buildOrd(n,items){
+  ordState[n]={zone:[],pool:shuffle(items.slice()),items};
+  renderOrd(n);
+}
+function renderOrd(n){
+  const s=ordState[n];
+  const zone=document.getElementById('oz'+n);
+  const pool=document.getElementById('op'+n);
+  if(!zone||!pool) return;
+  zone.innerHTML=''; zone.classList.toggle('empty',s.zone.length===0);
+  zone.classList.remove('ok-zone','bad-zone');
+  s.zone.forEach((w,i)=>{
+    const c=document.createElement('button'); c.className='w-chip'; c.textContent=w;
+    c.onclick=()=>{s.pool.push(s.zone.splice(i,1)[0]); renderOrd(n);};
+    zone.appendChild(c);
+  });
+  pool.innerHTML='';
+  s.pool.forEach((w,i)=>{
+    const c=document.createElement('button'); c.className='w-chip'; c.textContent=w;
+    c.onclick=()=>{s.zone.push(s.pool.splice(i,1)[0]); renderOrd(n);};
+    pool.appendChild(c);
+  });
+}
+function resetOrd(n){
+  unmarkDone(n);
+  const items=ordState[n].items;
+  buildOrd(n,items);
+  const fb=document.getElementById('of'+n);
+  if(fb){fb.textContent='';fb.className='ord-feedback';}
+  const sol=document.getElementById('os'+n);
+  if(sol){sol.textContent='';sol.style.display='none';}
+}
+function checkOrd(n){
+  if(!canCheck(n)) return; // attempts exhausted
+  const s=ordState[n];
+  const correct=s.zone.map(norm).join('|')===s.items.map(norm).join('|');
+  const zone=document.getElementById('oz'+n);
+  zone.classList.remove('ok-zone','bad-zone');
+  zone.classList.add(correct?'ok-zone':'bad-zone');
+  const fb=document.getElementById('of'+n);
+  if(correct){
+    fb.textContent='✅ Пра́вильно! · Correct! · 正確！· Đúng rồi!'; fb.className='ord-feedback good';
+    done[n]=false; award(n,TASK_MAX[n]||7,TASK_MAX[n]||7);
+  } else {
+    fb.textContent='❌ Пра́вильный поря́док · Correct order:'; fb.className='ord-feedback bad';
+    const sol=document.getElementById('os'+n);
+    sol.textContent=s.items.join(' → '); sol.style.display='block';
+    done[n]=false; award(n,0,TASK_MAX[n]||7);
+  }
+  registerAttempt(n);
+}
+// Lock ordering task (called only on final submit)
+function lockOrd(n){
+  document.querySelectorAll('#oz'+n+' .w-chip,#op'+n+' .w-chip').forEach(c=>c.disabled=true);
+}
+buildOrd(6,daysNom);
+buildOrd(8,months);
+
+/* ════════ TASK 10: PHRASE BUILDER ════════ */
+let p10idx=0, p10score=0;
+function renderPhrase(){
+  const body=document.getElementById('p10body');
+  if(p10idx>=phrases.length){
+    body.innerHTML=`<div style="text-align:center;padding:20px;font-size:1.2rem;color:var(--green)">
+      🎉 Все предложе́ния вы́полнены! · All sentences done! · 全部句子完成！· Đã xong tất cả câu!<br>
+      <b>⭐ ${p10score} / 7</b>
+    </div>`;
+    award(10,p10score,11);
+    return;
+  }
+  document.getElementById('p10qnum').textContent=`Предложе́ние ${p10idx+1} / 7`;
+  document.getElementById('p10bar').style.width=(p10idx/7*100)+'%';
+
+  const ph=phrases[p10idx];
+  let pzZone=[], pzPool=shuffle(ph.groups.slice());
+
+  body.innerHTML=`
+    <div class="phrase-target">
+      <div class="pt-zh">🇹🇼 ${ph.zh}</div>
+      <div class="pt-en">🇬🇧 ${ph.en}</div>
+      <div class="pt-vi">🇻🇳 ${ph.vi}</div>
+    </div>
+    <div class="ord-zone empty" id="pz10zone" data-hint="← 點詞組 / Tap groups / Chạm vào cụm từ"></div>
+    <div class="ord-pool" id="pz10pool"></div>
+    <div class="ord-feedback" id="pz10fb"></div>
+    <div class="ord-solution" id="pz10sol"></div>
+    <div class="btnrow" style="margin-top:10px">
+      <button class="btn ghost" onclick="checkPhrase()">✔ Прове́рить · Check · 送出 · Nộp</button>
+      <button class="btn" id="pz10next" style="display:none" onclick="nextPhrase()">Сле́дующее · Next · 下一句 · Câu tiếp ➜</button>
+    </div>`;
+
+  function rebuildPZ(){
+    const zone=document.getElementById('pz10zone');
+    const pool=document.getElementById('pz10pool');
+    if(!zone||!pool) return;
+    zone.innerHTML=''; zone.classList.toggle('empty',pzZone.length===0);
+    zone.classList.remove('ok-zone','bad-zone');
+    pzZone.forEach((g,i)=>{
+      const c=document.createElement('button'); c.className='w-chip'; c.textContent=g;
+      c.onclick=()=>{pzPool.push(pzZone.splice(i,1)[0]); rebuildPZ();};
+      zone.appendChild(c);
+    });
+    pool.innerHTML='';
+    pzPool.forEach((g,i)=>{
+      const c=document.createElement('button'); c.className='w-chip'; c.textContent=g;
+      c.onclick=()=>{pzZone.push(pzPool.splice(i,1)[0]); rebuildPZ();};
+      pool.appendChild(c);
+    });
+  }
+  rebuildPZ();
+
+  window.checkPhrase=function(){
+    const ok=JSON.stringify(pzZone.map(norm))===JSON.stringify(ph.groups.map(norm));
+    const zone=document.getElementById('pz10zone');
+    zone.classList.add(ok?'ok-zone':'bad-zone');
+    const fb=document.getElementById('pz10fb');
+    if(ok){
+      fb.textContent='✅ Пра́вильно! · Correct! · 正確！· Đúng rồi!'; fb.className='ord-feedback good';
+      p10score+=P10PTS[p10idx];
+      document.getElementById('p10score').textContent='⭐ '+p10score;
+    } else {
+      fb.textContent='❌ Пра́вильный поря́док:'; fb.className='ord-feedback bad';
+      const sol=document.getElementById('pz10sol');
+      sol.textContent=ph.groups.join(' / '); sol.style.display='block';
+    }
+    document.querySelectorAll('#pz10zone .w-chip,#pz10pool .w-chip').forEach(c=>c.disabled=true);
+    // grey out the check button for this phrase
+    document.querySelectorAll('#p10body .btn.ghost').forEach(b=>{b.classList.add('done');b.disabled=true;});
+    document.getElementById('pz10next').style.display='inline-block';
+  };
+}
+window.nextPhrase=function(){ p10idx++; renderPhrase(); };
+renderPhrase();
+
+/* ════════ SUBMIT + EmailJS ════════ */
+function submitExam(){
+  clearInterval(timerInterval);
+  timerDone=true;
+
+  const name  =document.getElementById('stuName').value.trim();
+  const id    =document.getElementById('stuId').value.trim();
+  const email =document.getElementById('stuEmail').value.trim();
+  const ruName=document.getElementById('stuRuName').value.trim();
+  const notes =document.getElementById('stuNotes').value.trim()||'—';
+
+  let ok=true;
+  if(!name){document.getElementById('stuName').classList.add('err');ok=false;}
+  if(!id)  {document.getElementById('stuId').classList.add('err');ok=false;}
+  if(!ruName){document.getElementById('stuRuName').classList.add('err');ok=false;}
+  if(!email||!email.includes('@')){document.getElementById('stuEmail').classList.add('err');ok=false;}
+  if(!ok){
+    alert('Пожа́луйста, запо́лните все поля́ (вкл. ру́сское и́мя).\nPlease fill in all required fields (incl. Russian name).\n請填寫所有必填欄位（含俄語名）。\nVui lòng điền đầy đủ thông tin (kể cả tên tiếng Nga).');
+    return;
+  }
+
+  // force-check all tasks 1–9 (bypass attempt guard by temporarily resetting)
+  // Save current attempt counts and reset so canCheck() returns true
+  const savedAttempts={};
+  for(let i=1;i<=9;i++){savedAttempts[i]=attempts[i]; attempts[i]=0;}
+  checkMCTask(1); checkMCTask(2);
+  submitMatch(3); submitMatch(4);
+  checkGender();
+  checkOrd(6); checkOrd(8);
+  submitMatch(7); submitMatch(9);
+  // Restore (doesn't matter much now but keeps state consistent)
+  for(let i=1;i<=9;i++) attempts[i]=savedAttempts[i];
+  if(!done[10]) award(10,p10score,11);
+
+  // Now lock all interactive elements for tasks 1–9
+  lockMCTask(1); lockMCTask(2);
+  lockMatch(3); lockMatch(4);
+  lockMatch(7); lockMatch(9);
+  lockOrd(6); lockOrd(8);
+  // Lock gender bank
+  document.querySelectorAll('.g-bank-word,.g-col-word').forEach(b=>{b.style.pointerEvents='none';});
+  // Lock all check/reset buttons
+  document.querySelectorAll('.task .btn.ghost').forEach(b=>{b.disabled=true;});
+
+  const t=totalScore();
+  const pct=(t/MAX*100).toFixed(0);
+  let emoji,grade,msg;
+  if(t>=67){emoji='🏆';grade='Отли́чно / A';msg='Превосхо́дный результа́т! · Outstanding! · 成績優秀！· Xuất sắc!';}
+  else if(t>=64){emoji='🎉';grade='Хорошо́ / B';msg='О́чень хорошо́! · Very good! · 非常好！· Rất tốt!';}
+  else if(t>=61){emoji='👍';grade='Удовл. / C';msg='Продолжа́йте учи́ться! · Keep studying! · 繼續加油！· Tiếp tục cố gắng!';}
+  else{emoji='📚';grade='Не зачтено / F';msg='Повтори́те материа́л. · Review the material. · 請複習。· Hãy ôn lại bài.';}
+
+  document.getElementById('finalEmoji').textContent=emoji;
+  document.getElementById('finalScore').textContent=t+' / '+MAX+' ('+pct+'%)';
+  document.getElementById('gradeBadge').textContent=grade;
+  document.getElementById('finalMsg').textContent=msg;
+  const fc=document.getElementById('finalCard');
+  fc.classList.add('shown');
+  document.getElementById('submitBtn').disabled=true;
+  fc.scrollIntoView({behavior:'smooth',block:'center'});
+
+  const fmtTime = d => d.toLocaleString('zh-TW',{timeZone:'Asia/Taipei',
+    year:'numeric',month:'2-digit',day:'2-digit',
+    hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+  const timeStart  = fmtTime(examStartTime);
+  const timeSubmit = fmtTime(new Date());
+
+  const fullBody=
+`Уважаемый/ая ${name}
+俄語名: ${ruName}
+學號: ${id}
+
+Ваш результа́т / Your score / 您的成績 / Điểm của bạn:
+★  ${t} / ${MAX}  (${pct}%)  ★
+Оце́нка / Grade: ${grade}
+════════════════════════════════════════
+Дета́ли / Details / 各題得分 / Chi tiết:
+
+Пункт 1  (RU→перево́д):                        ${scores[1]} / 2
+Пункт 2  (Перево́д→RU):                        ${scores[2]} / 2
+Пункт 3  (Matching ур. 13–14):                 ${scores[3]} / 7
+Пункт 4  (Matching лотере́я + быт):            ${scores[4]} / 7
+Пункт 5  (Грамматический род):                 ${scores[5]} / 8
+Пункт 6  («В/во + день» по поря́дку):         ${scores[6]} / 9
+Пункт 7  («В...» + де́йствие — matching):     ${scores[7]} / 6
+Пункт 8  (Ме́сяцы по поря́дку):               ${scores[8]} / 10
+Пункт 9  (Пого́да — matching):                 ${scores[9]} / 8
+Пункт 10 (Соста́вь предложе́ние):              ${scores[10]} / 11
+────────────────────────────────────────
+ИТОГО / TOTAL / 總分 / TỔNG: ${t} / ${MAX} (${pct}%) — ${grade}
+════════════════════════════════════════
+Приме́чания студе́нта / Notes: ${notes||'—'}
+
+Вре́мя нача́ла / 開始時間 / Start time:   ${timeStart}
+Вре́мя пода́чи / 提交時間 / Submit time:  ${timeSubmit}
+
+Ру́сский язы́к · Уро́ки 9–16 · 中原大學`;
+
+  sendViaEmailJS({
+    student_name: name,
+    student_id:   id,
+    student_email:email,
+    russian_name: ruName,
+    full_body:    fullBody,
+    to_email:     email,
+    cc_email:     'collegeorient@gmail.com',
+  });
+}
+
+async function sendViaEmailJS(params){
+  const status=document.getElementById('sendStatus');
+  status.style.display='block'; status.className='send-status';
+  status.textContent='📤 Отправля́ется · Sending · 傳送中… · Đang gửi…';
+  try{
+    const res=await emailjs.send('collegeorient','template_p4kk8bt',params);
+    if(res.status===200){
+      status.className='send-status ok';
+      status.textContent='✅ Результа́т отпра́влен преподава́телю и вам · Results sent to teacher & student · 成績已發送給師生 · Đã gửi kết quả cho giáo viên và sinh viên';
+    } else { throw new Error('Status '+res.status); }
+  } catch(e){
+    status.className='send-status err';
+    status.textContent='⚠ Не удало́сь отпра́вить. Сде́лайте скриншо́т. · Send failed — please screenshot. · 發送失敗，請截圖。· Gửi thất bại — vui lòng chụp màn hình.';
+    console.error('EmailJS error:',e);
+  }
+}
+</script>
+</body>
+</html>
 
